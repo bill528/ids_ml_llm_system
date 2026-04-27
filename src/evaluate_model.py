@@ -27,6 +27,12 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import config
 
+MODEL_LABELS = {
+    "decision_tree": "Decision Tree",
+    "random_forest": "Random Forest",
+    "svm": "SVM",
+}
+
 
 def load_processed_data() -> tuple[pd.DataFrame, pd.Series]:
     test_df = pd.read_csv(config.TEST_PROCESSED_FILE)
@@ -98,21 +104,34 @@ def save_metrics(result_df: pd.DataFrame, confusion_matrices: dict[str, list[lis
 
 def create_bar_chart(result_df: pd.DataFrame, metric: str, output_path: Path, title: str) -> None:
     sns.set_theme(style="whitegrid")
-    plt.figure(figsize=(8, 5))
+    plot_df = result_df.copy()
+    plot_df["display_name"] = plot_df["model_name"].map(MODEL_LABELS)
+    plt.figure(figsize=(9, 5.6))
     ax = sns.barplot(
-        data=result_df,
-        x="model_name",
+        data=plot_df,
+        x="display_name",
         y=metric,
-        hue="model_name",
-        palette="Blues_d",
+        hue="display_name",
+        palette=["#6baed6", "#4292c6", "#2171b5"],
         legend=False,
+        width=0.62,
     )
-    ax.set_title(title)
-    ax.set_xlabel("Model")
-    ax.set_ylabel(metric)
-    ax.set_ylim(0, 1)
-    for container in ax.containers:
-        ax.bar_label(container, fmt="%.4f", padding=3)
+    ax.set_title(title, fontsize=16, pad=14)
+    ax.set_xlabel("Model", fontsize=12)
+    ax.set_ylabel(metric.replace("_", " ").title(), fontsize=12)
+    ax.set_ylim(0, 1.06)
+    ax.tick_params(axis="x", labelsize=11)
+    ax.tick_params(axis="y", labelsize=11)
+    for patch in ax.patches:
+        height = patch.get_height()
+        ax.text(
+            patch.get_x() + patch.get_width() / 2,
+            min(height + 0.015, 1.03),
+            f"{height:.4f}",
+            ha="center",
+            va="bottom",
+            fontsize=11,
+        )
     plt.tight_layout()
     plt.savefig(output_path, dpi=300)
     plt.close()
@@ -121,11 +140,22 @@ def create_bar_chart(result_df: pd.DataFrame, metric: str, output_path: Path, ti
 def create_confusion_matrix_figure(best_model_name: str, confusion_matrices: dict[str, list[list[int]]]) -> None:
     matrix = confusion_matrices[best_model_name]
     sns.set_theme(style="white")
-    plt.figure(figsize=(6, 5))
-    ax = sns.heatmap(matrix, annot=True, fmt="d", cmap="Blues", cbar=False)
-    ax.set_title(f"Confusion Matrix - {best_model_name}")
-    ax.set_xlabel("Predicted Label")
-    ax.set_ylabel("True Label")
+    plt.figure(figsize=(7, 5.8))
+    ax = sns.heatmap(
+        matrix,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        cbar=True,
+        annot_kws={"size": 12},
+        xticklabels=["Normal", "Attack"],
+        yticklabels=["Normal", "Attack"],
+    )
+    ax.set_title(f"Confusion Matrix - {MODEL_LABELS[best_model_name]}", fontsize=16, pad=14)
+    ax.set_xlabel("Predicted Class", fontsize=12)
+    ax.set_ylabel("True Class", fontsize=12)
+    ax.tick_params(axis="x", labelsize=11)
+    ax.tick_params(axis="y", labelsize=11, rotation=0)
     plt.tight_layout()
     plt.savefig(config.BEST_MODEL_CONFUSION_FIGURE_FILE, dpi=300)
     plt.close()
