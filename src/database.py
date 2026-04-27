@@ -80,15 +80,40 @@ def save_batch_results(results: list[dict[str, Any]]) -> None:
 
 
 def load_detection_history(limit: int | None = None) -> list[dict[str, Any]]:
+    return query_detection_history(limit=limit)
+
+
+def query_detection_history(
+    limit: int | None = None,
+    model_name: str | None = None,
+    risk_level: str | None = None,
+    prediction_text: str | None = None,
+) -> list[dict[str, Any]]:
     initialize_database()
-    query = "SELECT * FROM detection_results ORDER BY id DESC"
-    params: tuple[Any, ...] = ()
+    query = "SELECT * FROM detection_results"
+    conditions: list[str] = []
+    params: list[Any] = []
+
+    if model_name:
+        conditions.append("model_name = ?")
+        params.append(model_name)
+    if risk_level:
+        conditions.append("risk_level = ?")
+        params.append(risk_level)
+    if prediction_text:
+        conditions.append("prediction_text = ?")
+        params.append(prediction_text)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    query += " ORDER BY id DESC"
     if limit:
         query += " LIMIT ?"
-        params = (limit,)
+        params.append(limit)
 
     with get_connection() as conn:
-        rows = conn.execute(query, params).fetchall()
+        rows = conn.execute(query, tuple(params)).fetchall()
         columns = [desc[0] for desc in conn.execute("SELECT * FROM detection_results").description]
 
     results: list[dict[str, Any]] = []
@@ -98,6 +123,33 @@ def load_detection_history(limit: int | None = None) -> list[dict[str, Any]]:
         item["key_features"] = json.loads(item.pop("key_features_json") or "{}")
         results.append(item)
     return results
+
+
+def summarize_detection_history(
+    model_name: str | None = None,
+    risk_level: str | None = None,
+    prediction_text: str | None = None,
+) -> dict[str, Any]:
+    results = query_detection_history(
+        limit=None,
+        model_name=model_name,
+        risk_level=risk_level,
+        prediction_text=prediction_text,
+    )
+
+    summary = {
+        "total": len(results),
+        "prediction_counts": {},
+        "risk_counts": {},
+        "model_counts": {},
+    }
+
+    for item in results:
+        summary["prediction_counts"][item["prediction_text"]] = summary["prediction_counts"].get(item["prediction_text"], 0) + 1
+        summary["risk_counts"][item["risk_level"]] = summary["risk_counts"].get(item["risk_level"], 0) + 1
+        summary["model_counts"][item["model_name"]] = summary["model_counts"].get(item["model_name"], 0) + 1
+
+    return summary
 
 
 def export_results_to_json(results: list[dict[str, Any]]) -> None:

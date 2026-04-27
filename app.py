@@ -2,10 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 
 import config
-from src.database import initialize_database, load_detection_history
+from src.database import (
+    initialize_database,
+    query_detection_history,
+    summarize_detection_history,
+)
 from src.predict import load_input_data, predict_batch, predict_single
 
 
@@ -14,6 +18,11 @@ app = Flask(__name__)
 
 @app.get("/")
 def index():
+    return render_template("dashboard.html")
+
+
+@app.get("/api")
+def api_index():
     return jsonify(
         {
             "project": "ids_ml_llm_system",
@@ -24,6 +33,7 @@ def index():
                 "detect_csv": "/api/detect/csv",
                 "detect_single": "/api/detect/single",
                 "history": "/api/history",
+                "history_summary": "/api/history/summary",
             },
         }
     )
@@ -53,10 +63,12 @@ def detect_csv():
         input_df = input_df.head(int(limit))
 
     results = predict_batch(input_df, model_name=model_name, save_results=True)
+    summary = build_result_summary(results)
     return jsonify(
         {
             "count": len(results),
             "model_name": results[0]["model_name"] if results else model_name,
+            "summary": summary,
             "results": results,
         }
     )
@@ -78,8 +90,42 @@ def detect_single():
 @app.get("/api/history")
 def history():
     limit = request.args.get("limit", default=20, type=int)
-    results = load_detection_history(limit=limit)
+    model_name = request.args.get("model_name")
+    risk_level = request.args.get("risk_level")
+    prediction_text = request.args.get("prediction_text")
+    results = query_detection_history(
+        limit=limit,
+        model_name=model_name,
+        risk_level=risk_level,
+        prediction_text=prediction_text,
+    )
     return jsonify({"count": len(results), "results": results})
+
+
+@app.get("/api/history/summary")
+def history_summary():
+    model_name = request.args.get("model_name")
+    risk_level = request.args.get("risk_level")
+    prediction_text = request.args.get("prediction_text")
+    return jsonify(
+        summarize_detection_history(
+            model_name=model_name,
+            risk_level=risk_level,
+            prediction_text=prediction_text,
+        )
+    )
+
+
+def build_result_summary(results: list[dict]) -> dict:
+    summary = {
+        "total": len(results),
+        "prediction_counts": {},
+        "risk_counts": {},
+    }
+    for item in results:
+        summary["prediction_counts"][item["prediction_text"]] = summary["prediction_counts"].get(item["prediction_text"], 0) + 1
+        summary["risk_counts"][item["risk_level"]] = summary["risk_counts"].get(item["risk_level"], 0) + 1
+    return summary
 
 
 def create_app() -> Flask:
