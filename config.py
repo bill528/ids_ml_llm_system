@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -18,6 +19,7 @@ REPORTS_DIR = BASE_DIR / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 METRICS_DIR = REPORTS_DIR / "metrics"
 EXPORTS_DIR = REPORTS_DIR / "exports"
+RESULTS_DIR = BASE_DIR / "results"
 
 TRAIN_RAW_FILE = RAW_DATA_DIR / "UNSW_NB15_training-set.csv"
 TEST_RAW_FILE = RAW_DATA_DIR / "UNSW_NB15_testing-set.csv"
@@ -43,6 +45,16 @@ RECALL_FIGURE_FILE = FIGURES_DIR / "model_recall_comparison.png"
 F1_FIGURE_FILE = FIGURES_DIR / "model_f1_comparison.png"
 BEST_MODEL_CONFUSION_FIGURE_FILE = FIGURES_DIR / "best_model_confusion_matrix.png"
 
+DETECTION_RESULTS_JSON_FILE = RESULTS_DIR / "detection_results.json"
+DETECTION_RESULTS_CSV_FILE = RESULTS_DIR / "detection_results.csv"
+
+DEFAULT_MODEL_NAME = "decision_tree"
+DEFAULT_TOP_FEATURE_COUNT = 5
+
+LLM_API_KEY = os.getenv("OPENAI_API_KEY", "")
+LLM_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
+LLM_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
 TARGET_COLUMN = "label"
 AUX_LABEL_COLUMN = "attack_cat"
 DROP_COLUMNS = ["id"]
@@ -60,5 +72,6 @@ def ensure_directories() -> None:
         FIGURES_DIR,
         METRICS_DIR,
         EXPORTS_DIR,
+        RESULTS_DIR,
     ):
         path.mkdir(parents=True, exist_ok=True)
