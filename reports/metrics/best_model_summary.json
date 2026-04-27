@@ -1,0 +1,8 @@
+{
+  "model_name": "decision_tree",
+  "accuracy": 0.870148,
+  "precision": 0.829494,
+  "recall": 0.961881,
+  "f1_score": 0.890796,
+  "predict_seconds": 0.030841
+}

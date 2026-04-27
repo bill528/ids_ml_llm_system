@@ -9,12 +9,7 @@ __pycache__/
 
 database/*.db
 
-data/processed/
 reports/exports/
-reports/figures/
-reports/metrics/
-
-models/saved/
 
 .DS_Store
 Thumbs.db

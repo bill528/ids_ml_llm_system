@@ -1,0 +1,17 @@
+[
+  {
+    "model_name": "decision_tree",
+    "train_seconds": 1.7678,
+    "output_path": "D:\\浙江万里学院\\大三下\\综合设计分析\\个人\\ids_ml_llm_system\\models\\saved\\decision_tree_model.joblib"
+  },
+  {
+    "model_name": "random_forest",
+    "train_seconds": 27.6136,
+    "output_path": "D:\\浙江万里学院\\大三下\\综合设计分析\\个人\\ids_ml_llm_system\\models\\saved\\random_forest_model.joblib"
+  },
+  {
+    "model_name": "svm",
+    "train_seconds": 9.4145,
+    "output_path": "D:\\浙江万里学院\\大三下\\综合设计分析\\个人\\ids_ml_llm_system\\models\\saved\\svm_model.joblib"
+  }
+]

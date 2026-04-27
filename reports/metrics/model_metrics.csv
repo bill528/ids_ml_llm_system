@@ -1,0 +1,4 @@
+model_name,accuracy,precision,recall,f1_score,predict_seconds
+decision_tree,0.870148,0.829494,0.961881,0.890796,0.030841
+random_forest,0.858767,0.799698,0.991948,0.885508,0.780953
+svm,0.812382,0.75135,0.98533,0.852578,0.015518
