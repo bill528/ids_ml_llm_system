@@ -30,6 +30,19 @@ FEATURE_COLUMNS_FILE = ENCODERS_DIR / "feature_columns.joblib"
 
 DATABASE_FILE = DATABASE_DIR / "ids.db"
 
+DECISION_TREE_MODEL_FILE = SAVED_MODELS_DIR / "decision_tree_model.joblib"
+RANDOM_FOREST_MODEL_FILE = SAVED_MODELS_DIR / "random_forest_model.joblib"
+SVM_MODEL_FILE = SAVED_MODELS_DIR / "svm_model.joblib"
+
+MODEL_RESULTS_FILE = METRICS_DIR / "model_metrics.csv"
+MODEL_RESULTS_JSON_FILE = METRICS_DIR / "model_metrics.json"
+BEST_MODEL_SUMMARY_FILE = METRICS_DIR / "best_model_summary.json"
+
+ACCURACY_FIGURE_FILE = FIGURES_DIR / "model_accuracy_comparison.png"
+RECALL_FIGURE_FILE = FIGURES_DIR / "model_recall_comparison.png"
+F1_FIGURE_FILE = FIGURES_DIR / "model_f1_comparison.png"
+BEST_MODEL_CONFUSION_FIGURE_FILE = FIGURES_DIR / "best_model_confusion_matrix.png"
+
 TARGET_COLUMN = "label"
 AUX_LABEL_COLUMN = "attack_cat"
 DROP_COLUMNS = ["id"]
