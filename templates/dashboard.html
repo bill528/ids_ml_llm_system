@@ -1,51 +1,76 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>网络入侵检测系统</title>
+  <title>Network Intrusion Detection System</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
   <main class="layout">
     <section class="hero">
       <div>
-        <h1>网络入侵检测系统</h1>
-        <p>第三阶段演示入口：支持批量检测、单条检测、历史结果查询与风险分析展示。</p>
+        <h1>Network Intrusion Detection System</h1>
+        <p>Phase three closure build with batch detection, single-sample prediction, history filters, and LLM-assisted analysis.</p>
       </div>
       <div class="hero-meta">
-        <span>模型默认值：Decision Tree</span>
-        <span>分析引擎：DeepSeek v4 Flash</span>
+        <span>Default model: Decision Tree</span>
+        <span>Analysis engine: DeepSeek v4 Flash</span>
       </div>
+    </section>
+
+    <section class="stats">
+      <article class="stat-card">
+        <span>Total records</span>
+        <strong id="statTotal">-</strong>
+      </article>
+      <article class="stat-card">
+        <span>Attack records</span>
+        <strong id="statAttack">-</strong>
+      </article>
+      <article class="stat-card">
+        <span>High risk records</span>
+        <strong id="statHighRisk">-</strong>
+      </article>
+      <article class="stat-card">
+        <span>Decision Tree records</span>
+        <strong id="statDefaultModel">-</strong>
+      </article>
     </section>
 
     <section class="grid">
       <section class="panel">
-        <h2>批量检测</h2>
-        <label>CSV 路径</label>
-        <input id="csvPath" type="text" value="D:\浙江万里学院\大三下\综合设计分析\个人\ids_ml_llm_system\data\raw\UNSW_NB15_testing-set.csv">
+        <div class="panel-head">
+          <h2>Batch Detection</h2>
+          <span class="panel-tip">Run detection on a raw CSV file with optional model selection.</span>
+        </div>
+        <label for="csvPath">CSV path</label>
+        <input id="csvPath" type="text" value="{{ default_csv_path }}">
         <div class="inline">
           <div>
-            <label>模型</label>
+            <label for="csvModel">Model</label>
             <select id="csvModel">
-              <option value="">默认最优模型</option>
+              <option value="">Use current best model</option>
               <option value="decision_tree">Decision Tree</option>
               <option value="random_forest">Random Forest</option>
               <option value="svm">SVM</option>
             </select>
           </div>
           <div>
-            <label>检测条数</label>
+            <label for="csvLimit">Row limit</label>
             <input id="csvLimit" type="number" min="1" max="100" value="10">
           </div>
         </div>
-        <button id="runCsvBtn">开始批量检测</button>
-        <pre id="csvSummary" class="result-box"></pre>
+        <button id="runCsvBtn" type="button">Run batch detection</button>
+        <pre id="csvSummary" class="result-box">Waiting for a batch detection task...</pre>
       </section>
 
       <section class="panel">
-        <h2>单条检测</h2>
-        <label>样本 JSON</label>
+        <div class="panel-head">
+          <h2>Single Detection</h2>
+          <span class="panel-tip">Paste one JSON sample to validate the real-time pipeline.</span>
+        </div>
+        <label for="singleSample">Sample JSON</label>
         <textarea id="singleSample" rows="15">{
   "id": 999001,
   "dur": 0.00001,
@@ -91,48 +116,78 @@
   "ct_srv_dst": 2,
   "is_sm_ips_ports": 0
 }</textarea>
-        <button id="runSingleBtn">开始单条检测</button>
-        <pre id="singleResult" class="result-box"></pre>
+        <button id="runSingleBtn" type="button">Run single detection</button>
+        <pre id="singleResult" class="result-box">Waiting for a single detection task...</pre>
       </section>
     </section>
 
     <section class="grid">
       <section class="panel">
-        <h2>历史筛选</h2>
+        <div class="panel-head">
+          <h2>History Filters</h2>
+          <span class="panel-tip">Filter by model, risk, prediction result, date range, and pagination.</span>
+        </div>
         <div class="inline triple">
           <div>
-            <label>模型</label>
+            <label for="historyModel">Model</label>
             <select id="historyModel">
-              <option value="">全部</option>
+              <option value="">All</option>
               <option value="decision_tree">Decision Tree</option>
               <option value="random_forest">Random Forest</option>
               <option value="svm">SVM</option>
             </select>
           </div>
           <div>
-            <label>风险等级</label>
+            <label for="historyRisk">Risk level</label>
             <select id="historyRisk">
-              <option value="">全部</option>
+              <option value="">All</option>
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>
           </div>
           <div>
-            <label>检测结论</label>
+            <label for="historyPrediction">Prediction</label>
             <select id="historyPrediction">
-              <option value="">全部</option>
+              <option value="">All</option>
               <option value="Attack">Attack</option>
               <option value="Normal">Normal</option>
             </select>
           </div>
         </div>
-        <button id="loadHistoryBtn">查询历史记录</button>
-        <pre id="historySummary" class="result-box small"></pre>
+        <div class="inline">
+          <div>
+            <label for="historyFrom">Created from</label>
+            <input id="historyFrom" type="date">
+          </div>
+          <div>
+            <label for="historyTo">Created to</label>
+            <input id="historyTo" type="date">
+          </div>
+        </div>
+        <div class="inline">
+          <div>
+            <label for="historyLimit">Page size</label>
+            <input id="historyLimit" type="number" min="1" max="100" value="20">
+          </div>
+          <div>
+            <label for="historyOffset">Offset</label>
+            <input id="historyOffset" type="number" min="0" value="0">
+          </div>
+        </div>
+        <div class="button-row">
+          <button id="loadHistoryBtn" type="button">Load history</button>
+          <button id="resetHistoryBtn" type="button" class="button-secondary">Reset filters</button>
+        </div>
+        <pre id="historySummary" class="result-box small">Waiting for history data...</pre>
       </section>
 
       <section class="panel">
-        <h2>最近检测记录</h2>
+        <div class="panel-head">
+          <h2>Recent Detection Records</h2>
+          <span class="panel-tip">Use this table for quick review and demo screenshots.</span>
+        </div>
+        <div id="historyMeta" class="history-meta">History has not been queried yet.</div>
         <div id="historyTable" class="table-wrap"></div>
       </section>
     </section>

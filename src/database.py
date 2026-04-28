@@ -85,9 +85,12 @@ def load_detection_history(limit: int | None = None) -> list[dict[str, Any]]:
 
 def query_detection_history(
     limit: int | None = None,
+    offset: int = 0,
     model_name: str | None = None,
     risk_level: str | None = None,
     prediction_text: str | None = None,
+    created_from: str | None = None,
+    created_to: str | None = None,
 ) -> list[dict[str, Any]]:
     initialize_database()
     query = "SELECT * FROM detection_results"
@@ -103,14 +106,25 @@ def query_detection_history(
     if prediction_text:
         conditions.append("prediction_text = ?")
         params.append(prediction_text)
+    if created_from:
+        conditions.append("created_at >= ?")
+        params.append(created_from)
+    if created_to:
+        conditions.append("created_at <= ?")
+        params.append(created_to)
 
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
 
     query += " ORDER BY id DESC"
-    if limit:
+    if limit is not None:
         query += " LIMIT ?"
         params.append(limit)
+    if offset:
+        if limit is None:
+            query += " LIMIT -1"
+        query += " OFFSET ?"
+        params.append(offset)
 
     with get_connection() as conn:
         rows = conn.execute(query, tuple(params)).fetchall()
@@ -129,12 +143,16 @@ def summarize_detection_history(
     model_name: str | None = None,
     risk_level: str | None = None,
     prediction_text: str | None = None,
+    created_from: str | None = None,
+    created_to: str | None = None,
 ) -> dict[str, Any]:
     results = query_detection_history(
         limit=None,
         model_name=model_name,
         risk_level=risk_level,
         prediction_text=prediction_text,
+        created_from=created_from,
+        created_to=created_to,
     )
 
     summary = {
@@ -150,6 +168,41 @@ def summarize_detection_history(
         summary["model_counts"][item["model_name"]] = summary["model_counts"].get(item["model_name"], 0) + 1
 
     return summary
+
+
+def count_detection_history(
+    model_name: str | None = None,
+    risk_level: str | None = None,
+    prediction_text: str | None = None,
+    created_from: str | None = None,
+    created_to: str | None = None,
+) -> int:
+    initialize_database()
+    query = "SELECT COUNT(*) FROM detection_results"
+    conditions: list[str] = []
+    params: list[Any] = []
+
+    if model_name:
+        conditions.append("model_name = ?")
+        params.append(model_name)
+    if risk_level:
+        conditions.append("risk_level = ?")
+        params.append(risk_level)
+    if prediction_text:
+        conditions.append("prediction_text = ?")
+        params.append(prediction_text)
+    if created_from:
+        conditions.append("created_at >= ?")
+        params.append(created_from)
+    if created_to:
+        conditions.append("created_at <= ?")
+        params.append(created_to)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    with get_connection() as conn:
+        return int(conn.execute(query, tuple(params)).fetchone()[0])
 
 
 def export_results_to_json(results: list[dict[str, Any]]) -> None:

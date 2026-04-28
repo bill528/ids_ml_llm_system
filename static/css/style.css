@@ -14,6 +14,32 @@ body {
   margin: 24px auto 40px;
 }
 
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.stat-card span {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 28px;
+  color: #0f172a;
+}
+
 .hero {
   display: flex;
   justify-content: space-between;
@@ -64,6 +90,24 @@ body {
   font-size: 20px;
 }
 
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.panel-head h2 {
+  margin: 0;
+}
+
+.panel-tip {
+  font-size: 13px;
+  color: #64748b;
+  text-align: right;
+}
+
 label {
   display: block;
   margin-bottom: 8px;
@@ -107,6 +151,20 @@ button:hover {
   background: #1d4ed8;
 }
 
+.button-row {
+  display: flex;
+  gap: 12px;
+}
+
+.button-secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.button-secondary:hover {
+  background: #cbd5e1;
+}
+
 .inline {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -136,6 +194,13 @@ button:hover {
   overflow: auto;
 }
 
+.history-meta,
+.empty-state {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -155,6 +220,7 @@ th {
 }
 
 @media (max-width: 960px) {
+  .stats,
   .grid,
   .inline,
   .inline.triple,

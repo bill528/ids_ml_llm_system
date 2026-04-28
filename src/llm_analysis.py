@@ -17,16 +17,17 @@ import config
 
 def build_prompt(prediction_result: dict[str, Any]) -> str:
     return f"""
-你是一名网络安全分析助手。请根据以下网络入侵检测结果，输出结构化安全分析。
+You are a network security analyst assistant.
+Review the following intrusion-detection result and return a JSON object.
 
-模型名称：{prediction_result['model_name']}
-检测结论：{prediction_result['prediction_text']}
-预测标签：{prediction_result['prediction_label']}
-预测分数：{prediction_result.get('prediction_score')}
-关键特征：{json.dumps(prediction_result.get('key_features', {}), ensure_ascii=False)}
-原始特征摘要：{json.dumps(prediction_result.get('raw_features', {}), ensure_ascii=False)}
+Model: {prediction_result['model_name']}
+Prediction text: {prediction_result['prediction_text']}
+Prediction label: {prediction_result['prediction_label']}
+Prediction score: {prediction_result.get('prediction_score')}
+Key features: {json.dumps(prediction_result.get('key_features', {}), ensure_ascii=False)}
+Raw feature summary: {json.dumps(prediction_result.get('raw_features', {}), ensure_ascii=False)}
 
-请返回 JSON，字段必须包括：
+Required JSON fields:
 - risk_level
 - explanation
 - impact
@@ -47,7 +48,7 @@ def call_llm_api(prompt: str) -> dict[str, Any]:
         json={
             "model": config.LLM_MODEL,
             "messages": [
-                {"role": "system", "content": "你是网络安全分析助手，必须返回 JSON。"},
+                {"role": "system", "content": "You are a network security assistant. Return JSON only."},
                 {"role": "user", "content": prompt},
             ],
             "temperature": 0.2,
@@ -70,8 +71,8 @@ def parse_llm_response(response: dict[str, Any]) -> dict[str, str]:
         return {
             "risk_level": "Unknown",
             "explanation": content,
-            "impact": "需要人工进一步确认。",
-            "suggestion": "建议结合原始流量和日志再次核验。",
+            "impact": "Manual review is still required.",
+            "suggestion": "Cross-check the raw traffic and system logs before taking action.",
         }
 
 
@@ -88,16 +89,16 @@ def fallback_analysis(prediction_result: dict[str, Any]) -> dict[str, str]:
         else:
             risk_level = "Low"
         explanation = (
-            f"模型将该流量判定为攻击流量，主要依据是多个关键特征出现明显异常，"
-            f"其中包括 {', '.join(key_features.keys()) if key_features else '若干网络行为特征'}。"
+            "The model classified this traffic as an attack because several key "
+            f"features appear abnormal, including {', '.join(key_features.keys()) if key_features else 'multiple network behavior indicators'}."
         )
-        impact = "该流量可能导致未授权访问、资源消耗异常或服务受影响。"
-        suggestion = "建议立即核查来源IP、会话行为与目标主机状态，并结合防火墙或入侵防御策略进行限制。"
+        impact = "This traffic may lead to unauthorized access, abnormal resource consumption, or service disruption."
+        suggestion = "Inspect the source IP, session behavior, and target host state, then apply firewall or intrusion-prevention controls as needed."
     else:
         risk_level = "Low"
-        explanation = "模型将该流量判定为正常流量，当前未发现明显攻击特征。"
-        impact = "短期内风险较低，但仍建议结合业务场景进行持续监测。"
-        suggestion = "建议保留日志记录并继续观察，如后续同源流量异常增多可进一步分析。"
+        explanation = "The model classified this traffic as normal and did not detect strong attack indicators."
+        impact = "The short-term risk appears low, but continued monitoring is still recommended."
+        suggestion = "Keep the relevant logs and continue observing similar sessions for abnormal changes."
 
     return {
         "risk_level": risk_level,
