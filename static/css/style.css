@@ -259,6 +259,14 @@ th {
   background: #f8fafc;
 }
 
+.history-row {
+  cursor: pointer;
+}
+
+.history-row:hover {
+  background: #f8fbff;
+}
+
 @media (max-width: 960px) {
   .stats,
   .chart-grid,

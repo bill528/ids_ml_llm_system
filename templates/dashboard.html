@@ -1,39 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Network Intrusion Detection System</title>
+  <title>&#32593;&#32476;&#20837;&#20405;&#26816;&#27979;&#31995;&#32479;</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
   <main class="layout">
     <section class="hero">
       <div>
-        <h1>Network Intrusion Detection System</h1>
-        <p>Phase three closure build with batch detection, single-sample prediction, history filters, and LLM-assisted analysis.</p>
+        <h1>&#32593;&#32476;&#20837;&#20405;&#26816;&#27979;&#31995;&#32479;</h1>
+        <p>&#25903;&#25345;&#26426;&#22120;&#23398;&#20064;&#26816;&#27979;&#12289;&#21382;&#21490;&#35760;&#24405;&#26597;&#35810;&#12289;CSV &#25991;&#20214;&#23548;&#20837;&#65292;&#20197;&#21450;&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#65292;&#36866;&#21512;&#32508;&#21512;&#23454;&#36341;&#28436;&#31034;&#19982;&#31572;&#36797;&#23637;&#31034;&#12290;</p>
       </div>
       <div class="hero-meta">
-        <span>Default model: Decision Tree</span>
-        <span>Analysis engine: DeepSeek v4 Flash</span>
+        <span>&#40664;&#35748;&#26816;&#27979;&#27169;&#22411;&#65306;Decision Tree</span>
+        <span>&#20998;&#26512;&#24341;&#25806;&#65306;DeepSeek v4 Flash</span>
       </div>
     </section>
 
     <section class="stats">
       <article class="stat-card">
-        <span>Total records</span>
+        <span>&#21382;&#21490;&#24635;&#35760;&#24405;&#25968;</span>
         <strong id="statTotal">-</strong>
       </article>
       <article class="stat-card">
-        <span>Attack records</span>
+        <span>&#25915;&#20987;&#35760;&#24405;&#25968;</span>
         <strong id="statAttack">-</strong>
       </article>
       <article class="stat-card">
-        <span>High risk records</span>
+        <span>&#39640;&#39118;&#38505;&#35760;&#24405;&#25968;</span>
         <strong id="statHighRisk">-</strong>
       </article>
       <article class="stat-card">
-        <span>Decision Tree records</span>
+        <span>&#20915;&#31574;&#26641;&#35760;&#24405;&#25968;</span>
         <strong id="statDefaultModel">-</strong>
       </article>
     </section>
@@ -41,20 +41,20 @@
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
-          <h2>Detection Summary</h2>
-          <span class="panel-tip">Quick visual summary based on the current history filters.</span>
+          <h2>&#26816;&#27979;&#25688;&#35201;</h2>
+          <span class="panel-tip">&#26681;&#25454;&#24403;&#21069;&#31579;&#36873;&#26465;&#20214;&#24555;&#36895;&#26597;&#30475;&#26816;&#27979;&#20998;&#24067;&#24773;&#20917;&#12290;</span>
         </div>
         <div class="chart-grid">
           <div>
-            <h3>Prediction Distribution</h3>
+            <h3>&#26816;&#27979;&#32467;&#26524;&#20998;&#24067;</h3>
             <div id="predictionChart" class="chart-list"></div>
           </div>
           <div>
-            <h3>Risk Distribution</h3>
+            <h3>&#39118;&#38505;&#31561;&#32423;&#20998;&#24067;</h3>
             <div id="riskChart" class="chart-list"></div>
           </div>
           <div>
-            <h3>Model Usage</h3>
+            <h3>&#27169;&#22411;&#20351;&#29992;&#20998;&#24067;</h3>
             <div id="modelChart" class="chart-list"></div>
           </div>
         </div>
@@ -64,38 +64,38 @@
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
-          <h2>Batch Detection</h2>
-          <span class="panel-tip">Run detection on a raw CSV file with direct upload or optional local path.</span>
+          <h2>&#25209;&#37327;&#26816;&#27979;</h2>
+          <span class="panel-tip">&#25903;&#25345;&#30452;&#25509;&#23548;&#20837; CSV &#25991;&#20214;&#65292;&#20063;&#25903;&#25345;&#36755;&#20837;&#26412;&#22320;&#36335;&#24452;&#36827;&#34892;&#26816;&#27979;&#12290;</span>
         </div>
-        <label for="csvFile">Select CSV file</label>
+        <label for="csvFile">&#36873;&#25321; CSV &#25991;&#20214;</label>
         <input id="csvFile" type="file" accept=".csv,text/csv">
-        <label for="csvPath">CSV path</label>
+        <label for="csvPath">CSV &#36335;&#24452;</label>
         <input id="csvPath" type="text" value="{{ default_csv_path }}">
         <div class="inline">
           <div>
-            <label for="csvModel">Model</label>
+            <label for="csvModel">&#26816;&#27979;&#27169;&#22411;</label>
             <select id="csvModel">
-              <option value="">Use current best model</option>
+              <option value="">&#20351;&#29992;&#24403;&#21069;&#26368;&#20248;&#27169;&#22411;</option>
               <option value="decision_tree">Decision Tree</option>
               <option value="random_forest">Random Forest</option>
               <option value="svm">SVM</option>
             </select>
           </div>
           <div>
-            <label for="csvLimit">Row limit</label>
+            <label for="csvLimit">&#26816;&#27979;&#26465;&#25968;</label>
             <input id="csvLimit" type="number" min="1" max="100" value="10">
           </div>
         </div>
-        <button id="runCsvBtn" type="button">Run batch detection</button>
-        <pre id="csvSummary" class="result-box">Waiting for a batch detection task...</pre>
+        <button id="runCsvBtn" type="button">&#24320;&#22987;&#25209;&#37327;&#26816;&#27979;</button>
+        <pre id="csvSummary" class="result-box">&#31561;&#24453;&#25209;&#37327;&#26816;&#27979;&#20219;&#21153;...</pre>
       </section>
 
       <section class="panel">
         <div class="panel-head">
-          <h2>Single Detection</h2>
-          <span class="panel-tip">Paste one JSON sample to validate the real-time pipeline.</span>
+          <h2>&#21333;&#26465;&#26816;&#27979;</h2>
+          <span class="panel-tip">&#36755;&#20837;&#21333;&#26465;&#26679;&#26412; JSON&#65292;&#29992;&#20110;&#39564;&#35777;&#23454;&#26102;&#26816;&#27979;&#19982;&#20998;&#26512;&#38142;&#36335;&#12290;</span>
         </div>
-        <label for="singleSample">Sample JSON</label>
+        <label for="singleSample">&#26679;&#26412; JSON</label>
         <textarea id="singleSample" rows="15">{
   "id": 999001,
   "dur": 0.00001,
@@ -141,27 +141,27 @@
   "ct_srv_dst": 2,
   "is_sm_ips_ports": 0
 }</textarea>
-        <button id="runSingleBtn" type="button">Run single detection</button>
-        <pre id="singleResult" class="result-box">Waiting for a single detection task...</pre>
+        <button id="runSingleBtn" type="button">&#24320;&#22987;&#21333;&#26465;&#26816;&#27979;</button>
+        <pre id="singleResult" class="result-box">&#31561;&#24453;&#21333;&#26465;&#26816;&#27979;&#20219;&#21153;...</pre>
       </section>
     </section>
 
     <section class="panel">
       <div class="panel-head">
-        <h2>LLM Settings</h2>
-        <span class="panel-tip">Optional: provide your own model name and API key for assisted analysis.</span>
+        <h2>&#22823;&#27169;&#22411;&#37197;&#32622;</h2>
+        <span class="panel-tip">&#21487;&#36873;&#22635;&#20889;&#20320;&#33258;&#24049;&#30340;&#27169;&#22411;&#21517;&#31216;&#12289;&#23494;&#38053;&#21644;&#25509;&#21475;&#22320;&#22336;&#65292;&#29992;&#20110;&#36741;&#21161;&#20998;&#26512;&#12290;</span>
       </div>
       <div class="inline triple">
         <div>
-          <label for="llmModel">LLM model name</label>
+          <label for="llmModel">&#27169;&#22411;&#21517;&#31216;</label>
           <input id="llmModel" type="text" value="{{ default_llm_model }}" placeholder="deepseek-v4-flash">
         </div>
         <div>
-          <label for="llmApiKey">API key</label>
-          <input id="llmApiKey" type="password" placeholder="Enter your API key">
+          <label for="llmApiKey">API &#23494;&#38053;</label>
+          <input id="llmApiKey" type="password" placeholder="&#35831;&#36755;&#20837;&#20320;&#30340; API &#23494;&#38053;">
         </div>
         <div>
-          <label for="llmBaseUrl">Base URL</label>
+          <label for="llmBaseUrl">&#25509;&#21475;&#22320;&#22336;</label>
           <input id="llmBaseUrl" type="text" value="{{ default_llm_base_url }}" placeholder="https://api.deepseek.com">
         </div>
       </div>
@@ -170,71 +170,71 @@
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
-          <h2>History Filters</h2>
-          <span class="panel-tip">Filter by model, risk, prediction result, date range, and pagination.</span>
+          <h2>&#21382;&#21490;&#35760;&#24405;&#31579;&#36873;</h2>
+          <span class="panel-tip">&#25903;&#25345;&#25353;&#27169;&#22411;&#12289;&#39118;&#38505;&#31561;&#32423;&#12289;&#26816;&#27979;&#32467;&#26524;&#12289;&#26102;&#38388;&#33539;&#22260;&#21644;&#20998;&#39029;&#36827;&#34892;&#31579;&#36873;&#12290;</span>
         </div>
         <div class="inline triple">
           <div>
-            <label for="historyModel">Model</label>
+            <label for="historyModel">&#27169;&#22411;</label>
             <select id="historyModel">
-              <option value="">All</option>
+              <option value="">&#20840;&#37096;</option>
               <option value="decision_tree">Decision Tree</option>
               <option value="random_forest">Random Forest</option>
               <option value="svm">SVM</option>
             </select>
           </div>
           <div>
-            <label for="historyRisk">Risk level</label>
+            <label for="historyRisk">&#39118;&#38505;&#31561;&#32423;</label>
             <select id="historyRisk">
-              <option value="">All</option>
+              <option value="">&#20840;&#37096;</option>
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>
           </div>
           <div>
-            <label for="historyPrediction">Prediction</label>
+            <label for="historyPrediction">&#26816;&#27979;&#32467;&#26524;</label>
             <select id="historyPrediction">
-              <option value="">All</option>
-              <option value="Attack">Attack</option>
-              <option value="Normal">Normal</option>
+              <option value="">&#20840;&#37096;</option>
+              <option value="Attack">&#25915;&#20987;</option>
+              <option value="Normal">&#27491;&#24120;</option>
             </select>
           </div>
         </div>
         <div class="inline">
           <div>
-            <label for="historyFrom">Created from</label>
+            <label for="historyFrom">&#24320;&#22987;&#26085;&#26399;</label>
             <input id="historyFrom" type="date">
           </div>
           <div>
-            <label for="historyTo">Created to</label>
+            <label for="historyTo">&#32467;&#26463;&#26085;&#26399;</label>
             <input id="historyTo" type="date">
           </div>
         </div>
         <div class="inline">
           <div>
-            <label for="historyLimit">Page size</label>
+            <label for="historyLimit">&#27599;&#39029;&#26465;&#25968;</label>
             <input id="historyLimit" type="number" min="1" max="100" value="20">
           </div>
           <div>
-            <label for="historyOffset">Offset</label>
+            <label for="historyOffset">&#36215;&#22987;&#20559;&#31227;</label>
             <input id="historyOffset" type="number" min="0" value="0">
           </div>
         </div>
         <div class="button-row">
-          <button id="loadHistoryBtn" type="button">Load history</button>
-          <button id="resetHistoryBtn" type="button" class="button-secondary">Reset filters</button>
-          <button id="exportHistoryBtn" type="button" class="button-secondary">Export CSV</button>
+          <button id="loadHistoryBtn" type="button">&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;</button>
+          <button id="resetHistoryBtn" type="button" class="button-secondary">&#37325;&#32622;&#31579;&#36873;</button>
+          <button id="exportHistoryBtn" type="button" class="button-secondary">&#23548;&#20986; CSV</button>
         </div>
-        <pre id="historySummary" class="result-box small">Waiting for history data...</pre>
+        <pre id="historySummary" class="result-box small">&#31561;&#24453;&#21382;&#21490;&#25968;&#25454;...</pre>
       </section>
 
       <section class="panel">
         <div class="panel-head">
-          <h2>Recent Detection Records</h2>
-          <span class="panel-tip">Use this table for quick review and demo screenshots.</span>
+          <h2>&#26368;&#36817;&#26816;&#27979;&#35760;&#24405;</h2>
+          <span class="panel-tip">&#21487;&#29992;&#20110;&#24555;&#36895;&#26597;&#30475;&#26816;&#27979;&#32467;&#26524;&#65292;&#20063;&#36866;&#21512;&#31572;&#36797;&#25130;&#22270;&#23637;&#31034;&#12290;</span>
         </div>
-        <div id="historyMeta" class="history-meta">History has not been queried yet.</div>
+        <div id="historyMeta" class="history-meta">&#23578;&#26410;&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;&#12290;</div>
         <div id="historyTable" class="table-wrap"></div>
       </section>
     </section>
@@ -242,10 +242,10 @@
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
-          <h2>Record Detail</h2>
-          <span class="panel-tip">Click a history row to inspect the full result and LLM analysis.</span>
+          <h2>&#35760;&#24405;&#35814;&#24773;</h2>
+          <span class="panel-tip">&#28857;&#20987;&#21382;&#21490;&#35760;&#24405;&#20013;&#30340;&#26576;&#19968;&#34892;&#65292;&#21487;&#20197;&#26597;&#30475;&#23436;&#25972;&#26816;&#27979;&#32467;&#26524;&#21644;&#22823;&#27169;&#22411;&#20998;&#26512;&#20869;&#23481;&#12290;</span>
         </div>
-        <pre id="recordDetail" class="result-box">Select a history row to view details.</pre>
+        <pre id="recordDetail" class="result-box">&#28857;&#20987;&#19968;&#26465;&#21382;&#21490;&#35760;&#24405;&#21518;&#22312;&#36825;&#37324;&#26597;&#30475;&#35814;&#24773;&#12290;</pre>
       </section>
     </section>
   </main>

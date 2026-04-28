@@ -1,6 +1,6 @@
 [
   {
-    "record_id": "20260428_135129_0001",
+    "record_id": "20260428_151410_0001",
     "model_name": "decision_tree",
     "prediction_label": 1,
     "prediction_text": "Attack",
@@ -57,7 +57,7 @@
       "dur": 1e-05,
       "rate": 3000
     },
-    "created_at": "2026-04-28 13:51:29",
+    "created_at": "2026-04-28 15:14:10",
     "risk_level": "High",
     "explanation": "The model classified this traffic as an attack because several key features appear abnormal, including proto, service, state, dur, rate.",
     "impact": "This traffic may lead to unauthorized access, abnormal resource consumption, or service disruption.",

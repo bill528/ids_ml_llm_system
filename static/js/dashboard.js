@@ -6,7 +6,7 @@ async function fetchJson(url, options = {}) {
   const response = await fetch(url, requestOptions);
   const data = await response.json();
   if (!response.ok || data.success === false) {
-    throw new Error(data.error || "Request failed");
+    throw new Error(data.error || "\u8bf7\u6c42\u5931\u8d25");
   }
   return data;
 }
@@ -67,7 +67,7 @@ function renderChart(containerId, dataMap) {
   const container = document.getElementById(containerId);
   const entries = Object.entries(dataMap || {});
   if (!entries.length) {
-    container.innerHTML = "<p class='empty-state'>No data available.</p>";
+    container.innerHTML = "<p class='empty-state'>\u6682\u65e0\u53ef\u5c55\u793a\u6570\u636e\u3002</p>";
     return;
   }
   const maxValue = Math.max(...entries.map(([, value]) => value), 1);
@@ -93,13 +93,13 @@ function renderHistoryMeta(history) {
   const start = history.total === 0 ? 0 : history.offset + 1;
   const end = history.offset + history.count;
   document.getElementById("historyMeta").textContent =
-    `Showing records ${start} - ${end} of ${history.total}.`;
+    `\u5f53\u524d\u663e\u793a\u7b2c ${start} - ${end} \u6761\uff0c\u5171 ${history.total} \u6761\u8bb0\u5f55\u3002`;
 }
 
 function renderHistoryTable(results) {
   const container = document.getElementById("historyTable");
   if (!results.length) {
-    container.innerHTML = "<p class='empty-state'>No history records match the current filters.</p>";
+    container.innerHTML = "<p class='empty-state'>\u5f53\u524d\u7b5b\u9009\u6761\u4ef6\u4e0b\u6ca1\u6709\u5386\u53f2\u8bb0\u5f55\u3002</p>";
     return;
   }
 
@@ -122,12 +122,12 @@ function renderHistoryTable(results) {
     <table>
       <thead>
         <tr>
-          <th>Record ID</th>
-          <th>Model</th>
-          <th>Prediction</th>
-          <th>Risk Level</th>
-          <th>Score</th>
-          <th>Created At</th>
+          <th>\u8bb0\u5f55 ID</th>
+          <th>\u6a21\u578b</th>
+          <th>\u68c0\u6d4b\u7ed3\u679c</th>
+          <th>\u98ce\u9669\u7b49\u7ea7</th>
+          <th>\u5206\u6570</th>
+          <th>\u68c0\u6d4b\u65f6\u95f4</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
@@ -139,7 +139,7 @@ function renderHistoryTable(results) {
 }
 
 async function loadRecordDetail(recordId) {
-  renderMessage("recordDetail", "Loading record detail...");
+  renderMessage("recordDetail", "\u6b63\u5728\u52a0\u8f7d\u8bb0\u5f55\u8be6\u60c5...");
   try {
     const data = await fetchJson(`/api/history/${encodeURIComponent(recordId)}`);
     renderMessage("recordDetail", pretty(data.result));
@@ -154,7 +154,7 @@ async function runCsvDetection() {
   const selectedFile = fileInput.files[0];
   const modelName = document.getElementById("csvModel").value;
   const limit = Number(document.getElementById("csvLimit").value || 10);
-  renderMessage("csvSummary", "Running batch detection...");
+  renderMessage("csvSummary", "\u6b63\u5728\u6267\u884c\u6279\u91cf\u68c0\u6d4b...");
 
   try {
     let data;
@@ -199,7 +199,7 @@ async function runCsvDetection() {
 
 async function runSingleDetection() {
   const sampleText = document.getElementById("singleSample").value;
-  renderMessage("singleResult", "Running single detection...");
+  renderMessage("singleResult", "\u6b63\u5728\u6267\u884c\u5355\u6761\u68c0\u6d4b...");
 
   try {
     const sample = JSON.parse(sampleText);
@@ -217,7 +217,7 @@ async function runSingleDetection() {
 
 async function loadHistory() {
   const params = getFilterParams();
-  renderMessage("historySummary", "Loading history...");
+  renderMessage("historySummary", "\u6b63\u5728\u52a0\u8f7d\u5386\u53f2\u8bb0\u5f55...");
 
   try {
     const summaryParams = new URLSearchParams(params);
@@ -238,7 +238,7 @@ async function loadHistory() {
     renderChart("modelChart", summary.model_counts);
   } catch (error) {
     renderMessage("historySummary", error.message);
-    document.getElementById("historyMeta").textContent = "History query failed.";
+    document.getElementById("historyMeta").textContent = "\u5386\u53f2\u8bb0\u5f55\u67e5\u8be2\u5931\u8d25\u3002";
     document.getElementById("historyTable").innerHTML = "";
     document.getElementById("predictionChart").innerHTML = "";
     document.getElementById("riskChart").innerHTML = "";
