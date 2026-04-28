@@ -78,6 +78,41 @@ body {
   margin-bottom: 20px;
 }
 
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.chart-list {
+  display: grid;
+  gap: 10px;
+}
+
+.chart-row {
+  display: grid;
+  gap: 4px;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #334155;
+}
+
+.chart-bar-track {
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.chart-bar-fill {
+  height: 100%;
+  background: #2563eb;
+}
+
 .panel {
   background: #fff;
   border: 1px solid #dbe4f0;
@@ -88,6 +123,11 @@ body {
 .panel h2 {
   margin: 0 0 16px;
   font-size: 20px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
 }
 
 .panel-head {
@@ -221,6 +261,7 @@ th {
 
 @media (max-width: 960px) {
   .stats,
+  .chart-grid,
   .grid,
   .inline,
   .inline.triple,

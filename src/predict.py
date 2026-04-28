@@ -132,16 +132,31 @@ def enrich_with_analysis(prediction_result: dict[str, Any]) -> dict[str, Any]:
     return merged
 
 
+def sanitize_llm_options(llm_options: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    if not llm_options:
+        return None
+    cleaned = {
+        "base_url": str(llm_options.get("base_url") or "").strip(),
+        "model": str(llm_options.get("model") or "").strip(),
+        "api_key": str(llm_options.get("api_key") or "").strip(),
+    }
+    if not any(cleaned.values()):
+        return None
+    return cleaned
+
+
 def predict_batch(
     df: pd.DataFrame,
     model_name: str | None = None,
     save_results: bool = True,
+    llm_options: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     model, selected_name = load_model(model_name)
     preprocessor = load_preprocessor()
     feature_columns = load_feature_columns()
     transformed_df = preprocess_input_data(df, preprocessor, feature_columns)
     predictions = model.predict(transformed_df)
+    cleaned_llm_options = sanitize_llm_options(llm_options)
 
     results: list[dict[str, Any]] = []
     for idx, (row_index, raw_row) in enumerate(df.iterrows(), start=1):
@@ -154,7 +169,10 @@ def predict_batch(
             model_name=selected_name,
             record_index=idx,
         )
-        results.append(enrich_with_analysis(prediction_result))
+        analysis = analyze_prediction_result(prediction_result, llm_options=cleaned_llm_options)
+        merged = prediction_result.copy()
+        merged.update(analysis)
+        results.append(merged)
 
     if save_results:
         save_batch_results(results)
@@ -167,9 +185,15 @@ def predict_single(
     sample: dict[str, Any],
     model_name: str | None = None,
     save_result: bool = False,
+    llm_options: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     df = pd.DataFrame([sample])
-    result = predict_batch(df, model_name=model_name, save_results=save_result)[0]
+    result = predict_batch(
+        df,
+        model_name=model_name,
+        save_results=save_result,
+        llm_options=llm_options,
+    )[0]
     return result
 
 

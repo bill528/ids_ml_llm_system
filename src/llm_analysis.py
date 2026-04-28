@@ -15,6 +15,15 @@ if str(PROJECT_ROOT) not in sys.path:
 import config
 
 
+def resolve_llm_options(llm_options: dict[str, Any] | None = None) -> dict[str, str]:
+    options = llm_options or {}
+    return {
+        "api_key": str(options.get("api_key") or config.LLM_API_KEY or "").strip(),
+        "base_url": str(options.get("base_url") or config.LLM_BASE_URL or "").strip(),
+        "model": str(options.get("model") or config.LLM_MODEL or "").strip(),
+    }
+
+
 def build_prompt(prediction_result: dict[str, Any]) -> str:
     return f"""
 You are a network security analyst assistant.
@@ -35,18 +44,19 @@ Required JSON fields:
 """.strip()
 
 
-def call_llm_api(prompt: str) -> dict[str, Any]:
-    if not config.LLM_API_KEY:
+def call_llm_api(prompt: str, llm_options: dict[str, Any] | None = None) -> dict[str, Any]:
+    options = resolve_llm_options(llm_options)
+    if not options["api_key"] or not options["model"] or not options["base_url"]:
         return {}
 
     response = requests.post(
-        f"{config.LLM_BASE_URL.rstrip('/')}/chat/completions",
+        f"{options['base_url'].rstrip('/')}/chat/completions",
         headers={
-            "Authorization": f"Bearer {config.LLM_API_KEY}",
+            "Authorization": f"Bearer {options['api_key']}",
             "Content-Type": "application/json",
         },
         json={
-            "model": config.LLM_MODEL,
+            "model": options["model"],
             "messages": [
                 {"role": "system", "content": "You are a network security assistant. Return JSON only."},
                 {"role": "user", "content": prompt},
@@ -108,10 +118,13 @@ def fallback_analysis(prediction_result: dict[str, Any]) -> dict[str, str]:
     }
 
 
-def analyze_prediction_result(prediction_result: dict[str, Any]) -> dict[str, str]:
+def analyze_prediction_result(
+    prediction_result: dict[str, Any],
+    llm_options: dict[str, Any] | None = None,
+) -> dict[str, str]:
     prompt = build_prompt(prediction_result)
     try:
-        response = call_llm_api(prompt)
+        response = call_llm_api(prompt, llm_options=llm_options)
         parsed = parse_llm_response(response)
         if parsed:
             return parsed

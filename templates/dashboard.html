@@ -41,9 +41,34 @@
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
-          <h2>Batch Detection</h2>
-          <span class="panel-tip">Run detection on a raw CSV file with optional model selection.</span>
+          <h2>Detection Summary</h2>
+          <span class="panel-tip">Quick visual summary based on the current history filters.</span>
         </div>
+        <div class="chart-grid">
+          <div>
+            <h3>Prediction Distribution</h3>
+            <div id="predictionChart" class="chart-list"></div>
+          </div>
+          <div>
+            <h3>Risk Distribution</h3>
+            <div id="riskChart" class="chart-list"></div>
+          </div>
+          <div>
+            <h3>Model Usage</h3>
+            <div id="modelChart" class="chart-list"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Batch Detection</h2>
+          <span class="panel-tip">Run detection on a raw CSV file with direct upload or optional local path.</span>
+        </div>
+        <label for="csvFile">Select CSV file</label>
+        <input id="csvFile" type="file" accept=".csv,text/csv">
         <label for="csvPath">CSV path</label>
         <input id="csvPath" type="text" value="{{ default_csv_path }}">
         <div class="inline">
@@ -121,6 +146,27 @@
       </section>
     </section>
 
+    <section class="panel">
+      <div class="panel-head">
+        <h2>LLM Settings</h2>
+        <span class="panel-tip">Optional: provide your own model name and API key for assisted analysis.</span>
+      </div>
+      <div class="inline triple">
+        <div>
+          <label for="llmModel">LLM model name</label>
+          <input id="llmModel" type="text" value="{{ default_llm_model }}" placeholder="deepseek-v4-flash">
+        </div>
+        <div>
+          <label for="llmApiKey">API key</label>
+          <input id="llmApiKey" type="password" placeholder="Enter your API key">
+        </div>
+        <div>
+          <label for="llmBaseUrl">Base URL</label>
+          <input id="llmBaseUrl" type="text" value="{{ default_llm_base_url }}" placeholder="https://api.deepseek.com">
+        </div>
+      </div>
+    </section>
+
     <section class="grid">
       <section class="panel">
         <div class="panel-head">
@@ -178,6 +224,7 @@
         <div class="button-row">
           <button id="loadHistoryBtn" type="button">Load history</button>
           <button id="resetHistoryBtn" type="button" class="button-secondary">Reset filters</button>
+          <button id="exportHistoryBtn" type="button" class="button-secondary">Export CSV</button>
         </div>
         <pre id="historySummary" class="result-box small">Waiting for history data...</pre>
       </section>
@@ -189,6 +236,16 @@
         </div>
         <div id="historyMeta" class="history-meta">History has not been queried yet.</div>
         <div id="historyTable" class="table-wrap"></div>
+      </section>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Record Detail</h2>
+          <span class="panel-tip">Click a history row to inspect the full result and LLM analysis.</span>
+        </div>
+        <pre id="recordDetail" class="result-box">Select a history row to view details.</pre>
       </section>
     </section>
   </main>

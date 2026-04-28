@@ -83,6 +83,12 @@ def load_detection_history(limit: int | None = None) -> list[dict[str, Any]]:
     return query_detection_history(limit=limit)
 
 
+def row_to_result(item: dict[str, Any]) -> dict[str, Any]:
+    item["raw_features"] = json.loads(item.pop("raw_features_json") or "{}")
+    item["key_features"] = json.loads(item.pop("key_features_json") or "{}")
+    return item
+
+
 def query_detection_history(
     limit: int | None = None,
     offset: int = 0,
@@ -133,9 +139,7 @@ def query_detection_history(
     results: list[dict[str, Any]] = []
     for row in rows:
         item = dict(zip(columns, row))
-        item["raw_features"] = json.loads(item.pop("raw_features_json") or "{}")
-        item["key_features"] = json.loads(item.pop("key_features_json") or "{}")
-        results.append(item)
+        results.append(row_to_result(item))
     return results
 
 
@@ -220,3 +224,16 @@ def export_results_to_csv(results: list[dict[str, Any]]) -> None:
         row["key_features"] = json.dumps(result.get("key_features", {}), ensure_ascii=False)
         flat_rows.append(row)
     pd.DataFrame(flat_rows).to_csv(config.DETECTION_RESULTS_CSV_FILE, index=False)
+
+
+def get_detection_result_by_record_id(record_id: str) -> dict[str, Any] | None:
+    initialize_database()
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM detection_results WHERE record_id = ? ORDER BY id DESC LIMIT 1",
+            (record_id,),
+        ).fetchone()
+        columns = [desc[0] for desc in conn.execute("SELECT * FROM detection_results").description]
+    if not row:
+        return None
+    return row_to_result(dict(zip(columns, row)))

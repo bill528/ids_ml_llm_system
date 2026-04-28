@@ -1,8 +1,9 @@
 async function fetchJson(url, options = {}) {
-  const response = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
-    ...options,
-  });
+  const requestOptions = { ...options };
+  if (!(requestOptions.body instanceof FormData)) {
+    requestOptions.headers = { "Content-Type": "application/json", ...(requestOptions.headers || {}) };
+  }
+  const response = await fetch(url, requestOptions);
   const data = await response.json();
   if (!response.ok || data.success === false) {
     throw new Error(data.error || "Request failed");
@@ -16,6 +17,23 @@ function pretty(obj) {
 
 function renderMessage(id, text) {
   document.getElementById(id).textContent = text;
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function getLlmSettings() {
+  return {
+    llm_model: document.getElementById("llmModel").value.trim(),
+    llm_api_key: document.getElementById("llmApiKey").value.trim(),
+    llm_base_url: document.getElementById("llmBaseUrl").value.trim(),
+  };
 }
 
 function getFilterParams() {
@@ -45,6 +63,32 @@ function renderStats(summary) {
   document.getElementById("statDefaultModel").textContent = summary.model_counts?.decision_tree ?? 0;
 }
 
+function renderChart(containerId, dataMap) {
+  const container = document.getElementById(containerId);
+  const entries = Object.entries(dataMap || {});
+  if (!entries.length) {
+    container.innerHTML = "<p class='empty-state'>No data available.</p>";
+    return;
+  }
+  const maxValue = Math.max(...entries.map(([, value]) => value), 1);
+  container.innerHTML = entries
+    .map(([label, value]) => {
+      const width = `${Math.max((value / maxValue) * 100, 4)}%`;
+      return `
+        <div class="chart-row">
+          <div class="chart-label">
+            <span>${escapeHtml(label)}</span>
+            <span>${value}</span>
+          </div>
+          <div class="chart-bar-track">
+            <div class="chart-bar-fill" style="width: ${width};"></div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function renderHistoryMeta(history) {
   const start = history.total === 0 ? 0 : history.offset + 1;
   const end = history.offset + history.count;
@@ -62,7 +106,7 @@ function renderHistoryTable(results) {
   const rows = results
     .map(
       (item) => `
-    <tr>
+    <tr class="history-row" data-record-id="${escapeHtml(item.record_id)}">
       <td>${item.record_id}</td>
       <td>${item.model_name}</td>
       <td>${item.prediction_text}</td>
@@ -89,19 +133,55 @@ function renderHistoryTable(results) {
       <tbody>${rows}</tbody>
     </table>
   `;
+  container.querySelectorAll(".history-row").forEach((row) => {
+    row.addEventListener("click", () => loadRecordDetail(row.dataset.recordId));
+  });
+}
+
+async function loadRecordDetail(recordId) {
+  renderMessage("recordDetail", "Loading record detail...");
+  try {
+    const data = await fetchJson(`/api/history/${encodeURIComponent(recordId)}`);
+    renderMessage("recordDetail", pretty(data.result));
+  } catch (error) {
+    renderMessage("recordDetail", error.message);
+  }
 }
 
 async function runCsvDetection() {
   const inputPath = document.getElementById("csvPath").value.trim();
+  const fileInput = document.getElementById("csvFile");
+  const selectedFile = fileInput.files[0];
   const modelName = document.getElementById("csvModel").value;
   const limit = Number(document.getElementById("csvLimit").value || 10);
   renderMessage("csvSummary", "Running batch detection...");
 
   try {
-    const data = await fetchJson("/api/detect/csv", {
-      method: "POST",
-      body: JSON.stringify({ input_path: inputPath, model_name: modelName, limit }),
-    });
+    let data;
+    const llmSettings = getLlmSettings();
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("model_name", modelName);
+      formData.append("limit", String(limit));
+      Object.entries(llmSettings).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
+      data = await fetchJson("/api/detect/csv", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      data = await fetchJson("/api/detect/csv", {
+        method: "POST",
+        body: JSON.stringify({
+          input_path: inputPath,
+          model_name: modelName,
+          limit,
+          ...llmSettings,
+        }),
+      });
+    }
     renderMessage(
       "csvSummary",
       pretty({
@@ -123,9 +203,10 @@ async function runSingleDetection() {
 
   try {
     const sample = JSON.parse(sampleText);
+    const llmSettings = getLlmSettings();
     const data = await fetchJson("/api/detect/single", {
       method: "POST",
-      body: JSON.stringify({ sample }),
+      body: JSON.stringify({ sample, ...llmSettings }),
     });
     renderMessage("singleResult", pretty(data.result));
     await loadHistory();
@@ -152,10 +233,16 @@ async function loadHistory() {
     renderHistoryMeta(history);
     renderHistoryTable(history.results);
     renderStats(summary);
+    renderChart("predictionChart", summary.prediction_counts);
+    renderChart("riskChart", summary.risk_counts);
+    renderChart("modelChart", summary.model_counts);
   } catch (error) {
     renderMessage("historySummary", error.message);
     document.getElementById("historyMeta").textContent = "History query failed.";
     document.getElementById("historyTable").innerHTML = "";
+    document.getElementById("predictionChart").innerHTML = "";
+    document.getElementById("riskChart").innerHTML = "";
+    document.getElementById("modelChart").innerHTML = "";
   }
 }
 
@@ -170,9 +257,26 @@ function resetHistoryFilters() {
   loadHistory();
 }
 
+function syncSelectedFileToPath() {
+  const fileInput = document.getElementById("csvFile");
+  const pathInput = document.getElementById("csvPath");
+  if (fileInput.files.length) {
+    pathInput.value = fileInput.files[0].name;
+  }
+}
+
+function exportHistory() {
+  const params = getFilterParams();
+  params.delete("limit");
+  params.delete("offset");
+  window.location.href = `/api/history/export?${params.toString()}`;
+}
+
 document.getElementById("runCsvBtn").addEventListener("click", runCsvDetection);
 document.getElementById("runSingleBtn").addEventListener("click", runSingleDetection);
 document.getElementById("loadHistoryBtn").addEventListener("click", loadHistory);
 document.getElementById("resetHistoryBtn").addEventListener("click", resetHistoryFilters);
+document.getElementById("exportHistoryBtn").addEventListener("click", exportHistory);
+document.getElementById("csvFile").addEventListener("change", syncSelectedFileToPath);
 
 loadHistory();
