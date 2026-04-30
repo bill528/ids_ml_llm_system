@@ -141,6 +141,14 @@ body {
   align-items: start;
 }
 
+.single-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 20px;
+}
+
 .column {
   display: grid;
   gap: 20px;
@@ -626,7 +634,8 @@ th {
     grid-template-columns: 1fr;
   }
 
-  .workspace-grid {
+  .workspace-grid,
+  .single-grid {
     grid-template-columns: 1fr;
   }
 
