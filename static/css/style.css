@@ -68,14 +68,6 @@ body {
   line-height: 1.06;
 }
 
-.hero p {
-  margin: 14px 0 0;
-  max-width: 760px;
-  color: #dbeafe;
-  line-height: 1.75;
-  font-size: 16px;
-}
-
 .hero-side {
   display: grid;
   gap: 12px;
@@ -518,9 +510,9 @@ textarea {
 
 .history-body {
   display: grid;
-  grid-template-columns: minmax(540px, 0.95fr) minmax(480px, 1.05fr);
-  gap: 20px;
-  align-items: stretch;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
   margin-top: 16px;
 }
 
@@ -545,6 +537,10 @@ textarea {
 .detail-card-body {
   display: grid;
   gap: 14px;
+}
+
+.detail-column {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .table-wrap {
@@ -628,8 +624,6 @@ th {
   .column-analysis > .panel {
     height: 100%;
   }
-
-  .history-body { grid-template-columns: minmax(420px, 0.9fr) minmax(0, 1.1fr); }
 }
 
 @media (max-width: 1180px) {
@@ -648,6 +642,10 @@ th {
 
   .history-summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-column {
+    grid-template-columns: 1fr;
   }
 }
 
