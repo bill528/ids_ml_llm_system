@@ -136,7 +136,7 @@ body {
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: 360px minmax(440px, 1.05fr) minmax(360px, 0.9fr);
+  grid-template-columns: 360px minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }
@@ -147,10 +147,17 @@ body {
   align-content: start;
 }
 
-.column-controls .panel:first-child {
-  position: sticky;
-  top: 18px;
-  z-index: 2;
+.column-main {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
 }
 
 .panel {
@@ -493,6 +500,7 @@ textarea {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 16px;
+  align-items: stretch;
 }
 
 .toolbar {
@@ -590,6 +598,7 @@ th {
 
 .history-summary-grid .summary-metric {
   min-height: 110px;
+  width: 100%;
 }
 
 .info-card,
@@ -610,29 +619,22 @@ th {
   text-align: center;
 }
 
-@media (max-width: 1440px) {
-  .workspace-grid {
-    grid-template-columns: 330px minmax(0, 1fr);
-  }
-
-  .column-analysis {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    display: grid;
-  }
-
-  .column-analysis > .panel {
-    height: 100%;
-  }
-}
-
-@media (max-width: 1180px) {
+@media (max-width: 1220px) {
   .hero,
-  .workspace-grid,
-  .history-body,
   .visual-grid,
-  .column-analysis,
   .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .result-row {
+    grid-template-columns: 1fr;
+  }
+
+  .history-body {
     grid-template-columns: 1fr;
   }
 
@@ -646,6 +648,12 @@ th {
 
   .detail-column {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .history-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

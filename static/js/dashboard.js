@@ -123,8 +123,9 @@ function badgeClassByPrediction(predictionText) {
 
 function badgeClassByRisk(riskLevel) {
   const value = String(riskLevel || "").toLowerCase();
-  if (value === "high") return "badge-high";
-  if (value === "medium") return "badge-medium";
+  if (value === "high" || value === "高") return "badge-high";
+  if (value === "medium" || value === "中") return "badge-medium";
+  if (value === "low" || value === "低") return "badge-low";
   return "badge-low";
 }
 
@@ -266,12 +267,23 @@ function renderHistoryMeta(history) {
 }
 
 function renderHistorySummary(summary) {
-  document.getElementById("historySummary").innerHTML = renderMetrics([
+  const metrics = [
     { label: "总记录数", value: summary.total ?? 0 },
     { label: "攻击记录", value: summary.prediction_counts?.Attack ?? 0 },
     { label: "正常记录", value: summary.prediction_counts?.Normal ?? 0 },
     { label: "高风险记录", value: summary.risk_counts?.High ?? 0 },
-  ]);
+  ];
+
+  document.getElementById("historySummary").innerHTML = metrics
+    .map(
+      (item) => `
+        <div class="summary-metric">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+        </div>
+      `
+    )
+    .join("");
 }
 
 function renderHistoryTable(results) {
