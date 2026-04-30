@@ -4,99 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>&#32593;&#32476;&#20837;&#20405;&#26816;&#27979;&#31995;&#32479;</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20260430c">
 </head>
 <body>
-  <main class="layout">
-    <section class="hero">
-      <div>
+  <main class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <span class="hero-tag">&#32508;&#21512;&#23454;&#36341; / IDS + LLM</span>
         <h1>&#32593;&#32476;&#20837;&#20405;&#26816;&#27979;&#31995;&#32479;</h1>
-        <p>&#25903;&#25345;&#26426;&#22120;&#23398;&#20064;&#26816;&#27979;&#12289;&#21382;&#21490;&#35760;&#24405;&#26597;&#35810;&#12289;CSV &#25991;&#20214;&#23548;&#20837;&#65292;&#20197;&#21450;&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#65292;&#36866;&#21512;&#32508;&#21512;&#23454;&#36341;&#28436;&#31034;&#19982;&#31572;&#36797;&#23637;&#31034;&#12290;</p>
+        <p>
+          &#23558;&#26426;&#22120;&#23398;&#20064;&#26816;&#27979;&#12289;CSV &#25991;&#20214;&#23548;&#20837;&#12289;&#21382;&#21490;&#35760;&#24405;&#31649;&#29702;&#19982;&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#25972;&#21512;&#21040;&#21516;&#19968;&#20010;&#20202;&#34920;&#30424;&#20013;&#65292;
+          &#35753;&#26816;&#27979;&#32467;&#26524;&#12289;&#39118;&#38505;&#35780;&#20272;&#12289;&#22788;&#32622;&#24314;&#35758;&#21644;&#21382;&#21490;&#35814;&#24773;&#20840;&#37096;&#21487;&#35265;&#12289;&#21487;&#36861;&#28335;&#12289;&#21487;&#23637;&#31034;&#12290;
+        </p>
       </div>
-      <div class="hero-meta">
-        <span>&#40664;&#35748;&#26816;&#27979;&#27169;&#22411;&#65306;Decision Tree</span>
-        <span>&#20998;&#26512;&#24341;&#25806;&#65306;DeepSeek v4 Flash</span>
+      <div class="hero-side">
+        <div class="hero-badge">
+          <span class="hero-badge-label">&#40664;&#35748;&#26816;&#27979;&#27169;&#22411;</span>
+          <strong>Decision Tree</strong>
+        </div>
+        <div class="hero-badge">
+          <span class="hero-badge-label">&#36741;&#21161;&#20998;&#26512;&#24341;&#25806;</span>
+          <strong>DeepSeek v4 Flash</strong>
+        </div>
+        <div class="hero-badge">
+          <span class="hero-badge-label">&#24403;&#21069;&#33021;&#21147;</span>
+          <strong>CSV &#19978;&#20256;&#12289;&#21333;&#26465;&#26816;&#27979;&#12289;&#21382;&#21490;&#23548;&#20986;</strong>
+        </div>
       </div>
+    </header>
+
+    <section class="metric-grid">
+      <article class="metric-card">
+        <span class="metric-label">&#21382;&#21490;&#24635;&#35760;&#24405;</span>
+        <strong id="statTotal" class="metric-value">-</strong>
+      </article>
+      <article class="metric-card metric-danger">
+        <span class="metric-label">&#25915;&#20987;&#35760;&#24405;</span>
+        <strong id="statAttack" class="metric-value">-</strong>
+      </article>
+      <article class="metric-card metric-warn">
+        <span class="metric-label">&#39640;&#39118;&#38505;&#35760;&#24405;</span>
+        <strong id="statHighRisk" class="metric-value">-</strong>
+      </article>
+      <article class="metric-card metric-calm">
+        <span class="metric-label">&#20915;&#31574;&#26641;&#26816;&#27979;&#27425;&#25968;</span>
+        <strong id="statDefaultModel" class="metric-value">-</strong>
+      </article>
     </section>
 
-    <section class="stats">
-      <article class="stat-card">
-        <span>&#21382;&#21490;&#24635;&#35760;&#24405;&#25968;</span>
-        <strong id="statTotal">-</strong>
-      </article>
-      <article class="stat-card">
-        <span>&#25915;&#20987;&#35760;&#24405;&#25968;</span>
-        <strong id="statAttack">-</strong>
-      </article>
-      <article class="stat-card">
-        <span>&#39640;&#39118;&#38505;&#35760;&#24405;&#25968;</span>
-        <strong id="statHighRisk">-</strong>
-      </article>
-      <article class="stat-card">
-        <span>&#20915;&#31574;&#26641;&#35760;&#24405;&#25968;</span>
-        <strong id="statDefaultModel">-</strong>
-      </article>
-    </section>
+    <section class="workspace-grid">
+      <section class="column column-controls">
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#25805;&#20316;&#38754;&#26495;</h2>
+              <p>&#20808;&#36873;&#25321;&#26816;&#27979;&#26041;&#24335;&#65292;&#20877;&#37197;&#32622;&#36741;&#21161;&#20998;&#26512;&#27169;&#22411;&#65292;&#31995;&#32479;&#20250;&#33258;&#21160;&#23436;&#25104;&#26816;&#27979;&#12289;&#35780;&#20272;&#21644;&#35760;&#24405;&#20445;&#23384;&#12290;</p>
+            </div>
+          </div>
+          <div class="process-strip">
+            <span class="process-step active">1. &#36755;&#20837;&#25968;&#25454;</span>
+            <span class="process-step">2. &#26426;&#22120;&#23398;&#20064;&#26816;&#27979;</span>
+            <span class="process-step">3. &#22823;&#27169;&#22411;&#20998;&#26512;</span>
+          </div>
+        </article>
 
-    <section class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#26816;&#27979;&#25688;&#35201;</h2>
-          <span class="panel-tip">&#26681;&#25454;&#24403;&#21069;&#31579;&#36873;&#26465;&#20214;&#24555;&#36895;&#26597;&#30475;&#26816;&#27979;&#20998;&#24067;&#24773;&#20917;&#12290;</span>
-        </div>
-        <div class="chart-grid">
-          <div>
-            <h3>&#26816;&#27979;&#32467;&#26524;&#20998;&#24067;</h3>
-            <div id="predictionChart" class="chart-list"></div>
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#22823;&#27169;&#22411;&#37197;&#32622;</h2>
+              <p>&#29992;&#25143;&#21487;&#22312;&#21069;&#31471;&#30452;&#25509;&#22635;&#20889;&#27169;&#22411;&#21517;&#31216;&#12289;API &#23494;&#38053;&#21644; Base URL&#65292;&#20998;&#26512;&#32467;&#26524;&#20250;&#20351;&#29992;&#24403;&#21069;&#37197;&#32622;&#29983;&#25104;&#12290;</p>
+            </div>
           </div>
-          <div>
-            <h3>&#39118;&#38505;&#31561;&#32423;&#20998;&#24067;</h3>
-            <div id="riskChart" class="chart-list"></div>
+          <div class="form-stack">
+            <div class="field">
+              <label for="llmModel">&#27169;&#22411;&#21517;&#31216;</label>
+              <input id="llmModel" type="text" value="{{ default_llm_model }}" placeholder="deepseek-v4-flash">
+            </div>
+            <div class="field">
+              <label for="llmApiKey">API &#23494;&#38053;</label>
+              <input id="llmApiKey" type="password" placeholder="&#35831;&#36755;&#20837;&#20320;&#30340; API &#23494;&#38053;">
+            </div>
+            <div class="field">
+              <label for="llmBaseUrl">Base URL</label>
+              <input id="llmBaseUrl" type="text" value="{{ default_llm_base_url }}" placeholder="https://api.deepseek.com">
+            </div>
           </div>
-          <div>
-            <h3>&#27169;&#22411;&#20351;&#29992;&#20998;&#24067;</h3>
-            <div id="modelChart" class="chart-list"></div>
-          </div>
-        </div>
-      </section>
-    </section>
+        </article>
 
-    <section class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#25209;&#37327;&#26816;&#27979;</h2>
-          <span class="panel-tip">&#25903;&#25345;&#30452;&#25509;&#23548;&#20837; CSV &#25991;&#20214;&#65292;&#20063;&#25903;&#25345;&#36755;&#20837;&#26412;&#22320;&#36335;&#24452;&#36827;&#34892;&#26816;&#27979;&#12290;</span>
-        </div>
-        <label for="csvFile">&#36873;&#25321; CSV &#25991;&#20214;</label>
-        <input id="csvFile" type="file" accept=".csv,text/csv">
-        <label for="csvPath">CSV &#36335;&#24452;</label>
-        <input id="csvPath" type="text" value="{{ default_csv_path }}">
-        <div class="inline">
-          <div>
-            <label for="csvModel">&#26816;&#27979;&#27169;&#22411;</label>
-            <select id="csvModel">
-              <option value="">&#20351;&#29992;&#24403;&#21069;&#26368;&#20248;&#27169;&#22411;</option>
-              <option value="decision_tree">Decision Tree</option>
-              <option value="random_forest">Random Forest</option>
-              <option value="svm">SVM</option>
-            </select>
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#25209;&#37327;&#26816;&#27979;</h2>
+              <p>&#36873;&#25321; CSV &#25991;&#20214;&#25110;&#36755;&#20837;&#26412;&#22320;&#36335;&#24452;&#65292;&#31995;&#32479;&#23558;&#25277;&#21462;&#26679;&#26412;&#23436;&#25104;&#25209;&#37327;&#26816;&#27979;&#19982;&#39118;&#38505;&#35828;&#26126;&#12290;</p>
+            </div>
           </div>
-          <div>
-            <label for="csvLimit">&#26816;&#27979;&#26465;&#25968;</label>
-            <input id="csvLimit" type="number" min="1" max="100" value="10">
+          <div class="form-stack">
+            <div class="field">
+              <label for="csvFile">&#36873;&#25321; CSV &#25991;&#20214;</label>
+              <input id="csvFile" type="file" accept=".csv,text/csv">
+            </div>
+            <div class="field">
+              <label for="csvPath">CSV &#36335;&#24452;</label>
+              <input id="csvPath" type="text" value="{{ default_csv_path }}">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="csvModel">&#26816;&#27979;&#27169;&#22411;</label>
+                <select id="csvModel">
+                  <option value="">&#20351;&#29992;&#24403;&#21069;&#26368;&#20248;&#27169;&#22411;</option>
+                  <option value="decision_tree">Decision Tree</option>
+                  <option value="random_forest">Random Forest</option>
+                  <option value="svm">SVM</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="csvLimit">&#26816;&#27979;&#26465;&#25968;</label>
+                <input id="csvLimit" type="number" min="1" max="100" value="10">
+              </div>
+            </div>
+            <button id="runCsvBtn" type="button" class="primary-btn">&#24320;&#22987;&#25209;&#37327;&#26816;&#27979;</button>
           </div>
-        </div>
-        <button id="runCsvBtn" type="button">&#24320;&#22987;&#25209;&#37327;&#26816;&#27979;</button>
-        <pre id="csvSummary" class="result-box">&#31561;&#24453;&#25209;&#37327;&#26816;&#27979;&#20219;&#21153;...</pre>
-      </section>
+        </article>
 
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#21333;&#26465;&#26816;&#27979;</h2>
-          <span class="panel-tip">&#36755;&#20837;&#21333;&#26465;&#26679;&#26412; JSON&#65292;&#29992;&#20110;&#39564;&#35777;&#23454;&#26102;&#26816;&#27979;&#19982;&#20998;&#26512;&#38142;&#36335;&#12290;</span>
-        </div>
-        <label for="singleSample">&#26679;&#26412; JSON</label>
-        <textarea id="singleSample" rows="15">{
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#21333;&#26465;&#26816;&#27979;</h2>
+              <p>&#36755;&#20837;&#21333;&#26465;&#26679;&#26412; JSON&#65292;&#21487;&#24555;&#36895;&#39564;&#35777;&#23454;&#26102;&#26816;&#27979;&#32467;&#26524;&#21644;&#22823;&#27169;&#22411;&#36741;&#21161;&#35780;&#20272;&#12290;</p>
+            </div>
+          </div>
+          <div class="form-stack">
+            <div class="field">
+              <label for="singleSample">&#26679;&#26412; JSON</label>
+              <textarea id="singleSample" rows="14">{
   "id": 999001,
   "dur": 0.00001,
   "proto": "tcp",
@@ -141,114 +181,213 @@
   "ct_srv_dst": 2,
   "is_sm_ips_ports": 0
 }</textarea>
-        <button id="runSingleBtn" type="button">&#24320;&#22987;&#21333;&#26465;&#26816;&#27979;</button>
-        <pre id="singleResult" class="result-box">&#31561;&#24453;&#21333;&#26465;&#26816;&#27979;&#20219;&#21153;...</pre>
+            </div>
+            <button id="runSingleBtn" type="button" class="primary-btn">&#24320;&#22987;&#21333;&#26465;&#26816;&#27979;</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="column column-results">
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#32467;&#26524;&#24635;&#35272;</h2>
+              <p>&#36825;&#19968;&#26639;&#36127;&#36131;&#26174;&#31034;&#26426;&#22120;&#23398;&#20064;&#32467;&#26524;&#12289;&#32479;&#35745;&#20998;&#24067;&#21644;&#24403;&#21069;&#26816;&#27979;&#35201;&#28857;&#65292;&#29992;&#20110;&#24555;&#36895;&#25226;&#25569;&#31995;&#32479;&#29366;&#24577;&#12290;</p>
+            </div>
+          </div>
+          <div class="visual-grid">
+            <div class="mini-panel">
+              <h3>&#26816;&#27979;&#32467;&#26524;&#20998;&#24067;</h3>
+              <div id="predictionChart" class="chart-list"></div>
+            </div>
+            <div class="mini-panel">
+              <h3>&#39118;&#38505;&#31561;&#32423;&#20998;&#24067;</h3>
+              <div id="riskChart" class="chart-list"></div>
+            </div>
+            <div class="mini-panel">
+              <h3>&#27169;&#22411;&#20351;&#29992;&#20998;&#24067;</h3>
+              <div id="modelChart" class="chart-list"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#25209;&#37327;&#26816;&#27979;&#32467;&#26524;</h2>
+              <p>&#26082;&#26174;&#31034;&#25209;&#37327;&#26816;&#27979;&#32479;&#35745;&#65292;&#20063;&#20250;&#25226;&#39318;&#26465;&#26679;&#26412;&#30340;&#32467;&#26524;&#25335;&#24320;&#23637;&#31034;&#65292;&#26041;&#20415;&#29992;&#20110;&#27719;&#25253;&#21644;&#31572;&#36797;&#12290;</p>
+            </div>
+          </div>
+          <div id="csvDetectionCard" class="info-card">
+            <div class="empty-note">&#31561;&#24453;&#25209;&#37327;&#26816;&#27979;&#32467;&#26524;...</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#21333;&#26465;&#26816;&#27979;&#32467;&#26524;</h2>
+              <p>&#21333;&#26465;&#26816;&#27979;&#21306;&#22495;&#19987;&#38376;&#23637;&#31034;&#27169;&#22411;&#39044;&#27979;&#12289;&#32597;&#30475;&#20998;&#25968;&#12289;&#20851;&#38190;&#29305;&#24449;&#21644;&#26816;&#27979;&#21407;&#22987;&#20449;&#24687;&#12290;</p>
+            </div>
+          </div>
+          <div id="singleDetectionCard" class="info-card">
+            <div class="empty-note">&#31561;&#24453;&#21333;&#26465;&#26816;&#27979;&#32467;&#26524;...</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="column column-analysis">
+        <article class="panel analysis-center">
+          <div class="section-head">
+            <div>
+              <h2>&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#20013;&#24515;</h2>
+              <p>&#25152;&#26377;&#36741;&#21161;&#20998;&#26512;&#32467;&#26524;&#22312;&#27492;&#29420;&#31435;&#31383;&#21475;&#20869;&#36879;&#26126;&#23637;&#31034;&#65292;&#21253;&#25324;&#39118;&#38505;&#31561;&#32423;&#12289;&#20998;&#26512;&#35299;&#37322;&#12289;&#24433;&#21709;&#35828;&#26126;&#21644;&#22788;&#32622;&#24314;&#35758;&#12290;</p>
+            </div>
+          </div>
+          <div class="analysis-process">
+            <div class="analysis-step">
+              <span class="analysis-step-index">01</span>
+              <div>
+                <strong>&#26816;&#27979;&#32467;&#26524;</strong>
+                <p>&#20808;&#33719;&#21462;&#27169;&#22411;&#21028;&#26029;&#32467;&#35770;&#19982;&#20998;&#25968;&#12290;</p>
+              </div>
+            </div>
+            <div class="analysis-step">
+              <span class="analysis-step-index">02</span>
+              <div>
+                <strong>&#39118;&#38505;&#35780;&#20272;</strong>
+                <p>&#26681;&#25454;&#39044;&#27979;&#32467;&#26524;&#21644;&#20851;&#38190;&#29305;&#24449;&#29983;&#25104;&#39118;&#38505;&#31561;&#32423;&#12290;</p>
+              </div>
+            </div>
+            <div class="analysis-step">
+              <span class="analysis-step-index">03</span>
+              <div>
+                <strong>&#22788;&#32622;&#24314;&#35758;</strong>
+                <p>&#36820;&#22238;&#21487;&#30452;&#25509;&#29992;&#20110;&#27719;&#25253;&#30340;&#35299;&#37322;&#19982;&#24314;&#35758;&#12290;</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#25209;&#37327;&#22823;&#27169;&#22411;&#20998;&#26512;</h2>
+              <p>&#19982;&#24038;&#20391;&#25209;&#37327;&#26816;&#27979;&#32467;&#26524;&#19968;&#19968;&#23545;&#24212;&#65292;&#19981;&#20877;&#38544;&#34255;&#22312;&#23383;&#27573;&#37324;&#65292;&#32780;&#26159;&#20316;&#20026;&#29420;&#31435;&#20998;&#26512;&#31383;&#21475;&#23637;&#31034;&#12290;</p>
+            </div>
+          </div>
+          <div id="csvAnalysisCard" class="analysis-card">
+            <div class="empty-note">&#31561;&#24453;&#25209;&#37327;&#22823;&#27169;&#22411;&#20998;&#26512;&#32467;&#26524;...</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head">
+            <div>
+              <h2>&#21333;&#26465;&#22823;&#27169;&#22411;&#20998;&#26512;</h2>
+              <p>&#23558;&#21333;&#26465;&#26679;&#26412;&#30340;&#35299;&#37322;&#12289;&#24433;&#21709;&#21644;&#24314;&#35758;&#29420;&#31435;&#26174;&#31034;&#65292;&#26126;&#30830;&#21306;&#20998;&#20110;&#26426;&#22120;&#23398;&#20064;&#26816;&#27979;&#32467;&#35770;&#12290;</p>
+            </div>
+          </div>
+          <div id="singleAnalysisCard" class="analysis-card">
+            <div class="empty-note">&#31561;&#24453;&#21333;&#26465;&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;...</div>
+          </div>
+        </article>
       </section>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>&#22823;&#27169;&#22411;&#37197;&#32622;</h2>
-        <span class="panel-tip">&#21487;&#36873;&#22635;&#20889;&#20320;&#33258;&#24049;&#30340;&#27169;&#22411;&#21517;&#31216;&#12289;&#23494;&#38053;&#21644;&#25509;&#21475;&#22320;&#22336;&#65292;&#29992;&#20110;&#36741;&#21161;&#20998;&#26512;&#12290;</span>
+    <section class="panel history-panel">
+      <div class="section-head">
+        <div>
+          <h2>&#21382;&#21490;&#35760;&#24405;&#19982;&#20998;&#26512;&#35814;&#24773;</h2>
+          <p>&#24038;&#20391;&#26597;&#30475;&#21382;&#21490;&#35760;&#24405;&#21644;&#32479;&#35745;&#25688;&#35201;&#65292;&#21491;&#20391;&#21516;&#26102;&#23637;&#31034;&#26816;&#27979;&#32467;&#26524;&#35814;&#24773;&#19982;&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#35814;&#24773;&#12290;</p>
+        </div>
       </div>
-      <div class="inline triple">
-        <div>
-          <label for="llmModel">&#27169;&#22411;&#21517;&#31216;</label>
-          <input id="llmModel" type="text" value="{{ default_llm_model }}" placeholder="deepseek-v4-flash">
+
+      <div class="filter-grid">
+        <div class="field">
+          <label for="historyModel">&#27169;&#22411;</label>
+          <select id="historyModel">
+            <option value="">&#20840;&#37096;</option>
+            <option value="decision_tree">Decision Tree</option>
+            <option value="random_forest">Random Forest</option>
+            <option value="svm">SVM</option>
+          </select>
         </div>
-        <div>
-          <label for="llmApiKey">API &#23494;&#38053;</label>
-          <input id="llmApiKey" type="password" placeholder="&#35831;&#36755;&#20837;&#20320;&#30340; API &#23494;&#38053;">
+        <div class="field">
+          <label for="historyRisk">&#39118;&#38505;&#31561;&#32423;</label>
+          <select id="historyRisk">
+            <option value="">&#20840;&#37096;</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
         </div>
-        <div>
-          <label for="llmBaseUrl">&#25509;&#21475;&#22320;&#22336;</label>
-          <input id="llmBaseUrl" type="text" value="{{ default_llm_base_url }}" placeholder="https://api.deepseek.com">
+        <div class="field">
+          <label for="historyPrediction">&#26816;&#27979;&#32467;&#26524;</label>
+          <select id="historyPrediction">
+            <option value="">&#20840;&#37096;</option>
+            <option value="Attack">&#25915;&#20987;</option>
+            <option value="Normal">&#27491;&#24120;</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="historyFrom">&#24320;&#22987;&#26085;&#26399;</label>
+          <input id="historyFrom" type="date">
+        </div>
+        <div class="field">
+          <label for="historyTo">&#32467;&#26463;&#26085;&#26399;</label>
+          <input id="historyTo" type="date">
+        </div>
+        <div class="field">
+          <label for="historyLimit">&#27599;&#39029;&#26465;&#25968;</label>
+          <input id="historyLimit" type="number" min="1" max="100" value="20">
+        </div>
+        <div class="field">
+          <label for="historyOffset">&#36215;&#22987;&#20559;&#31227;</label>
+          <input id="historyOffset" type="number" min="0" value="0">
         </div>
       </div>
-    </section>
 
-    <section class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#21382;&#21490;&#35760;&#24405;&#31579;&#36873;</h2>
-          <span class="panel-tip">&#25903;&#25345;&#25353;&#27169;&#22411;&#12289;&#39118;&#38505;&#31561;&#32423;&#12289;&#26816;&#27979;&#32467;&#26524;&#12289;&#26102;&#38388;&#33539;&#22260;&#21644;&#20998;&#39029;&#36827;&#34892;&#31579;&#36873;&#12290;</span>
-        </div>
-        <div class="inline triple">
-          <div>
-            <label for="historyModel">&#27169;&#22411;</label>
-            <select id="historyModel">
-              <option value="">&#20840;&#37096;</option>
-              <option value="decision_tree">Decision Tree</option>
-              <option value="random_forest">Random Forest</option>
-              <option value="svm">SVM</option>
-            </select>
-          </div>
-          <div>
-            <label for="historyRisk">&#39118;&#38505;&#31561;&#32423;</label>
-            <select id="historyRisk">
-              <option value="">&#20840;&#37096;</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </div>
-          <div>
-            <label for="historyPrediction">&#26816;&#27979;&#32467;&#26524;</label>
-            <select id="historyPrediction">
-              <option value="">&#20840;&#37096;</option>
-              <option value="Attack">&#25915;&#20987;</option>
-              <option value="Normal">&#27491;&#24120;</option>
-            </select>
-          </div>
-        </div>
-        <div class="inline">
-          <div>
-            <label for="historyFrom">&#24320;&#22987;&#26085;&#26399;</label>
-            <input id="historyFrom" type="date">
-          </div>
-          <div>
-            <label for="historyTo">&#32467;&#26463;&#26085;&#26399;</label>
-            <input id="historyTo" type="date">
-          </div>
-        </div>
-        <div class="inline">
-          <div>
-            <label for="historyLimit">&#27599;&#39029;&#26465;&#25968;</label>
-            <input id="historyLimit" type="number" min="1" max="100" value="20">
-          </div>
-          <div>
-            <label for="historyOffset">&#36215;&#22987;&#20559;&#31227;</label>
-            <input id="historyOffset" type="number" min="0" value="0">
-          </div>
-        </div>
-        <div class="button-row">
-          <button id="loadHistoryBtn" type="button">&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;</button>
-          <button id="resetHistoryBtn" type="button" class="button-secondary">&#37325;&#32622;&#31579;&#36873;</button>
-          <button id="exportHistoryBtn" type="button" class="button-secondary">&#23548;&#20986; CSV</button>
-        </div>
-        <pre id="historySummary" class="result-box small">&#31561;&#24453;&#21382;&#21490;&#25968;&#25454;...</pre>
-      </section>
+      <div class="toolbar">
+        <button id="loadHistoryBtn" type="button" class="primary-btn">&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;</button>
+        <button id="resetHistoryBtn" type="button" class="secondary-btn">&#37325;&#32622;&#31579;&#36873;</button>
+        <button id="exportHistoryBtn" type="button" class="secondary-btn">&#23548;&#20986; CSV</button>
+      </div>
 
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#26368;&#36817;&#26816;&#27979;&#35760;&#24405;</h2>
-          <span class="panel-tip">&#21487;&#29992;&#20110;&#24555;&#36895;&#26597;&#30475;&#26816;&#27979;&#32467;&#26524;&#65292;&#20063;&#36866;&#21512;&#31572;&#36797;&#25130;&#22270;&#23637;&#31034;&#12290;</span>
-        </div>
-        <div id="historyMeta" class="history-meta">&#23578;&#26410;&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;&#12290;</div>
-        <div id="historyTable" class="table-wrap"></div>
-      </section>
-    </section>
+      <div class="history-meta" id="historyMeta">&#23578;&#26410;&#26597;&#35810;&#21382;&#21490;&#35760;&#24405;&#12290;</div>
 
-    <section class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>&#35760;&#24405;&#35814;&#24773;</h2>
-          <span class="panel-tip">&#28857;&#20987;&#21382;&#21490;&#35760;&#24405;&#20013;&#30340;&#26576;&#19968;&#34892;&#65292;&#21487;&#20197;&#26597;&#30475;&#23436;&#25972;&#26816;&#27979;&#32467;&#26524;&#21644;&#22823;&#27169;&#22411;&#20998;&#26512;&#20869;&#23481;&#12290;</span>
+      <div class="history-body">
+        <div class="history-table-panel">
+          <div class="detail-panel summary-panel">
+            <h3>&#21382;&#21490;&#25688;&#35201;</h3>
+            <div id="historySummary" class="detail-card-body">
+              <div class="empty-note">&#31561;&#24453;&#21382;&#21490;&#25968;&#25454;...</div>
+            </div>
+          </div>
+          <div class="detail-panel list-panel">
+            <h3>&#21382;&#21490;&#35760;&#24405;&#21015;&#34920;</h3>
+            <div id="historyTable" class="table-wrap"></div>
+          </div>
         </div>
-        <pre id="recordDetail" class="result-box">&#28857;&#20987;&#19968;&#26465;&#21382;&#21490;&#35760;&#24405;&#21518;&#22312;&#36825;&#37324;&#26597;&#30475;&#35814;&#24773;&#12290;</pre>
-      </section>
+
+        <div class="detail-column">
+          <section class="detail-panel">
+            <h3>&#26816;&#27979;&#32467;&#26524;&#35814;&#24773;</h3>
+            <div id="historyDetectionDetail" class="detail-card-body">
+              <div class="empty-note">&#28857;&#20987;&#19968;&#26465;&#21382;&#21490;&#35760;&#24405;&#21518;&#22312;&#36825;&#37324;&#26597;&#30475;&#26816;&#27979;&#32467;&#26524;&#12290;</div>
+            </div>
+          </section>
+          <section class="detail-panel">
+            <h3>&#22823;&#27169;&#22411;&#36741;&#21161;&#20998;&#26512;&#35814;&#24773;</h3>
+            <div id="historyAnalysisDetail" class="detail-card-body">
+              <div class="empty-note">&#28857;&#20987;&#19968;&#26465;&#21382;&#21490;&#35760;&#24405;&#21518;&#22312;&#36825;&#37324;&#26597;&#30475;&#22823;&#27169;&#22411;&#20998;&#26512;&#20869;&#23481;&#12290;</div>
+            </div>
+          </section>
+        </div>
+      </div>
     </section>
   </main>
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}?v=20260430c"></script>
 </body>
 </html>

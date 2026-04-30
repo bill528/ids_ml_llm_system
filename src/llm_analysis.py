@@ -26,8 +26,9 @@ def resolve_llm_options(llm_options: dict[str, Any] | None = None) -> dict[str, 
 
 def build_prompt(prediction_result: dict[str, Any]) -> str:
     return f"""
-You are a network security analyst assistant.
-Review the following intrusion-detection result and return a JSON object.
+你是一名网络安全分析助手。
+请基于以下入侵检测结果进行辅助分析，并且仅返回 JSON 对象。
+所有 explanation、impact、suggestion 字段都必须使用简体中文。
 
 Model: {prediction_result['model_name']}
 Prediction text: {prediction_result['prediction_text']}
@@ -58,7 +59,7 @@ def call_llm_api(prompt: str, llm_options: dict[str, Any] | None = None) -> dict
         json={
             "model": options["model"],
             "messages": [
-                {"role": "system", "content": "You are a network security assistant. Return JSON only."},
+                {"role": "system", "content": "你是一名网络安全分析助手。只返回 JSON，并且 explanation、impact、suggestion 必须使用简体中文。"},
                 {"role": "user", "content": prompt},
             ],
             "temperature": 0.2,
@@ -81,8 +82,8 @@ def parse_llm_response(response: dict[str, Any]) -> dict[str, str]:
         return {
             "risk_level": "Unknown",
             "explanation": content,
-            "impact": "Manual review is still required.",
-            "suggestion": "Cross-check the raw traffic and system logs before taking action.",
+            "impact": "仍建议人工复核本次分析结果。",
+            "suggestion": "在采取处置动作前，请先交叉核对原始流量与系统日志。",
         }
 
 
@@ -99,16 +100,16 @@ def fallback_analysis(prediction_result: dict[str, Any]) -> dict[str, str]:
         else:
             risk_level = "Low"
         explanation = (
-            "The model classified this traffic as an attack because several key "
-            f"features appear abnormal, including {', '.join(key_features.keys()) if key_features else 'multiple network behavior indicators'}."
+            "模型将该流量判定为攻击，原因是多个关键特征表现异常，包括："
+            f"{'、'.join(key_features.keys()) if key_features else '多个网络行为指标'}。"
         )
-        impact = "This traffic may lead to unauthorized access, abnormal resource consumption, or service disruption."
-        suggestion = "Inspect the source IP, session behavior, and target host state, then apply firewall or intrusion-prevention controls as needed."
+        impact = "该流量可能导致未授权访问、资源异常消耗或服务中断。"
+        suggestion = "建议检查源 IP、会话行为和目标主机状态，并按需启用防火墙或入侵防护策略。"
     else:
         risk_level = "Low"
-        explanation = "The model classified this traffic as normal and did not detect strong attack indicators."
-        impact = "The short-term risk appears low, but continued monitoring is still recommended."
-        suggestion = "Keep the relevant logs and continue observing similar sessions for abnormal changes."
+        explanation = "模型将该流量判定为正常，未发现明显攻击特征。"
+        impact = "当前短期风险较低，但仍建议持续观察相关流量。"
+        suggestion = "建议保留相关日志，并继续观察同类会话是否出现异常变化。"
 
     return {
         "risk_level": risk_level,

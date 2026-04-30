@@ -1,6 +1,6 @@
 [
   {
-    "record_id": "20260428_151410_0001",
+    "record_id": "20260430_091746_0001",
     "model_name": "decision_tree",
     "prediction_label": 1,
     "prediction_text": "Attack",
@@ -57,10 +57,10 @@
       "dur": 1e-05,
       "rate": 3000
     },
-    "created_at": "2026-04-28 15:14:10",
-    "risk_level": "High",
-    "explanation": "The model classified this traffic as an attack because several key features appear abnormal, including proto, service, state, dur, rate.",
-    "impact": "This traffic may lead to unauthorized access, abnormal resource consumption, or service disruption.",
-    "suggestion": "Inspect the source IP, session behavior, and target host state, then apply firewall or intrusion-prevention controls as needed."
+    "created_at": "2026-04-30 09:17:46",
+    "risk_level": "高",
+    "explanation": "决策树模型以100%的置信度预测该连接为攻击。关键特征显示：协议为TCP，服务为HTTP，连接状态为FIN，持续时间极短（0.00001秒），但速率高达3000，表明在极短时间内发送了大量数据包。结合原始特征中数据包数量（10个发送包，8个接收包）和极短的连接时间，这通常不符合正常HTTP通信模式，可能是一次快速扫描或攻击尝试。",
+    "impact": "此类攻击可能用于探测开放端口或服务漏洞，消耗目标系统资源，甚至为后续攻击做准备。若为扫描行为，可能暴露系统信息或脆弱点。",
+    "suggestion": "建议立即检查源IP地址（可从原始特征中获取）是否发起大量类似连接，并考虑在防火墙或入侵防御系统中加入规则以阻断该IP。同时，审核相关服务日志，确认是否存在漏洞利用迹象。"
   }
 ]
