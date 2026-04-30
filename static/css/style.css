@@ -138,14 +138,14 @@ body {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .single-grid {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
   margin-top: 20px;
 }
 
@@ -159,6 +159,7 @@ body {
   display: grid;
   gap: 20px;
   align-content: start;
+  height: 100%;
 }
 
 .result-row {
@@ -166,6 +167,7 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   align-items: stretch;
+  height: 100%;
 }
 
 .panel {
@@ -347,6 +349,7 @@ textarea {
 .info-card,
 .analysis-card {
   min-height: 240px;
+  height: 100%;
   border-radius: 8px;
   padding: 18px;
   border: 1px solid #d7e6f3;
@@ -614,6 +617,11 @@ th {
 .detail-card-body {
   display: grid;
   align-content: start;
+}
+
+.result-row > .panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .info-card > .empty-note,
