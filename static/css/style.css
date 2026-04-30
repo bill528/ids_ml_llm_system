@@ -164,10 +164,10 @@ body {
 
 .result-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 20px;
-  align-items: stretch;
-  height: 100%;
+  align-items: start;
+  height: auto;
 }
 
 .panel {
@@ -644,10 +644,6 @@ th {
 
   .workspace-grid,
   .single-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .result-row {
     grid-template-columns: 1fr;
   }
 
